@@ -1,53 +1,52 @@
 # 🌍 Travel Management System
-An all-in-one travel management tool to plan, book and track trips efficiently.
+An all-in-one tool to plan, book, and track trips efficiently.
 
 ---
 
-## 🤝 Pull Request Instructions
+## 🧭 Project Overview
+This system simplifies trip planning by allowing users to manage bookings, view itineraries, and track travel data in one place.
 
-Follow these steps to contribute and create a pull request successfully.
+## 👥 Contributors
+- Vivek Kumar Singh
+- Vishal Kumar Singh
+- Priyanka Kolte
+- Amruta Patil 
 
-- **Clone the repository** to your local device:
+## 🤝 Branch and Pull Request Workflow
+Follow the [Branch Naming Convention](https://medium.com/@abhay.pixolo/naming-conventions-for-git-branches-a-cheatsheet-8549feca2534) and steps below to contribute successfully.
+
+1. **Clone the repository**
+
 ```bash
-git clone <repository-link>
+git clone https://github.com/viveksingh2002/travel-management-app.git
 ```
 
-- Create and switch to a new branch for your task.
+2. **Create a new branch**
 ```bash
-git branch <branch-name>
-git checkout <branch-name>
-        or
 git checkout -b <branch-name>
 ```
+3. **Make changes**, commit, and push.
+4. **Create a Pull Request (PR)** on GitHub.
+5. **Wait for review and approval** (minimum two reviewers).
 
-- Make all necessary code or documentation changes in your branch.
-- Before committing, ensure your branch is up to date with the latest main branch:
-```bash
-git pull origin main
-```
+## 📝 Contribution Guidelines
+- Keep code clean, tested, and well-documented.
+- Use atomic commits with meaningful messages.
+- Never push directly to the `main` branch.
+- Always `git pull origin main` before pushing.
 
-- Once all changes are ready, commit and push them to your branch.
-```bash
-git add .
-git commit -m "Add <short-description-of-changes>"
-git push origin <branch-name>
-```
-- Create a Pull Request (PR)
-    - Go to your GitHub repository.
-    - Click on “Compare & Pull Request.”
-    - Add a title and short description of the changes.
-    - Submit your PR for review.
-
-- Review and Merge:
-    - At least two collaborators must review and approve the pull request.
-    - Once approved, the branch can be merged into the main branch.
-
-> ✅ **Note:** Always make sure your code is tested, clean, and well-documented before creating a pull request.
+## 📝 Best Practices
+- Always make sure your code is tested, clean, and well-documented before creating a pull request.
+- Commit early and often with meaningful messages
+- Use branches for all features and bug fixes
+- Keep commits atomic (one logical change per commit)
+- Avoid pushing directly to the main branch.
+- Pull before push to avoid conflicts
 
 ## 🧰 Technologies (Front-End / Client)
-- HTML5
-- Tailwind Css
-- Javascript
-- React (Vite)
+- **HTML5**
+- **Tailwind Css**
+- **Javascript**
+- **React (Vite)**
 
 
