@@ -1,7 +1,6 @@
 ##############################
-## Java
+## Java / Maven
 ##############################
-.mtj.tmp/
 *.class
 *.jar
 *.war
@@ -9,10 +8,6 @@
 *.nar
 hs_err_pid*
 replay_pid*
-
-##############################
-## Maven
-##############################
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -22,18 +17,18 @@ pom.xml.bak
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
+.mtj.tmp/
 .mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
 
 ##############################
-## IntelliJ
+## IntelliJ IDEA
 ##############################
-out/
 .idea/
-.idea_modules/
 *.iml
 *.ipr
 *.iws
+out/
 
 ##############################
 ## Eclipse
@@ -67,14 +62,39 @@ nb-configuration.xml
 ## Visual Studio Code
 ##############################
 .vscode/
-.code-workspace
+*.code-workspace
 
 ##############################
-## OS X
+## React / Vite
+##############################
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+dist/
+dist-ssr/
+
+# Local env files
+*.local
+
+# Editor files
+.DS_Store
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+##############################
+## OS
 ##############################
 .DS_Store
-
-##############################
-## Miscellaneous
-##############################
-*.log
+Thumbs.db
