@@ -1,6 +1,6 @@
 import React from 'react'
 
-function AdminNavBar() {
+function SupportTicket() {
   return (
     <div>
       
@@ -8,4 +8,4 @@ function AdminNavBar() {
   )
 }
 
-export default AdminNavBar
+export default SupportTicket

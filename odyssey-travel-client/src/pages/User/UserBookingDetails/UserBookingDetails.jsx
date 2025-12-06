@@ -1,5 +1,5 @@
 import React from 'react'
-import User_DashBoard from './../User_DashBoard/User_DashBoard';
+import User_DashBoard from '../User_DashBoard/User_DashBoard';
 
 function UserBookingDetails() {
   return (

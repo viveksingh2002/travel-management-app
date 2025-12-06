@@ -1,6 +1,4 @@
 
-import './package_details.css';
-
 function package_details()
 {
     return(
