@@ -6,3 +6,5 @@ body
 {
     padding: 0px;
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
