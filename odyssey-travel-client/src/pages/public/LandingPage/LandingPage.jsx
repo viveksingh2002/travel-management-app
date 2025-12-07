@@ -4,13 +4,14 @@ import Navbar from "../../../components/Navbar/Navbar";
 import Destination from "../../../components/Destinations/Destination";
 import Itinerary from "../../../components/Itineraries/Itinerary";
 import Footer from "../../../components/Footer/Footer";
+// import Login from "../../auth/Login/Login";
 
 function LandingPage() {
+
   return (
     <>
-      <div className="h-[50px]">
-        <Navbar />
-      </div>
+      <Navbar />
+
       <Destination />
 
       <Itinerary />

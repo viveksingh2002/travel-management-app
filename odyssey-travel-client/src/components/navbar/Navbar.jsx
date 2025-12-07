@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
+import Login from '../../pages/auth/Login/Login.jsx';
+
 function Navbar() {
     const [open, setOpen] = useState(false);
+    const [showLogin, setShowLogin] = useState(false);
 
     const navLinks = [
         { name: "Home", href: "#home", active: true },
@@ -15,10 +18,16 @@ function Navbar() {
     return (
         <header className="w-full bg-white dark:bg-neutral-800 shadow-sm px-4 z-50 relative">
             <nav className="max-w-[85rem] mx-auto px-4 py-3 flex items-center justify-between">
-
                 {/* LEFT - LOGO */}
-                <a href="#" className="flex items-center text-3xl font-bold dark:text-white">
-                    <img className="w-[55px] h-auto" src="/images/odyssey_logo.png" alt="Logo" />
+                <a
+                    href="#"
+                    className="flex items-center text-3xl font-bold dark:text-white"
+                >
+                    <img
+                        className="w-[55px] h-auto"
+                        src="/images/odyssey_logo.png"
+                        alt="Logo"
+                    />
                     <span>Odyssey</span>
                 </a>
 
@@ -54,6 +63,7 @@ function Navbar() {
                         type="button"
                         className="py-2 px-4 rounded-lg bg-blue-600 text-white 
             hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 transition"
+                        onClick={() => setShowLogin(true)}
                     >
                         Login
                     </button>
@@ -64,9 +74,7 @@ function Navbar() {
             {open && (
                 <div className="sm:hidden px-4 pb-4">
                     <div className="flex flex-col gap-4 mt-2">
-
                         {navLinks.map((link) => (
-
                             <a
                                 key={link.name}
                                 href={link.href}
@@ -77,12 +85,12 @@ function Navbar() {
                             >
                                 {link.name}
                             </a>
-
                         ))}
-
                     </div>
                 </div>
             )}
+            {/* Login Popup */}
+            {showLogin && <Login isOpen={showLogin} setIsOpen={setShowLogin} />}
         </header>
     );
 }
