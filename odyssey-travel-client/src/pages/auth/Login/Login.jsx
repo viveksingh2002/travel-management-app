@@ -8,9 +8,11 @@ import {
   faEyeSlash,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import { faGithub, faGoogle } from "@fortawesome/free-brands-svg-icons";
+
 
 import sideImg from "../../../assets/images/login-bg.jpg";
+import ToggleRoleButton from "../../../components/ToggleRoleButton/ToggleRoleButton";
+import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 
 export default function Login({ isOpen, setIsOpen }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -49,9 +51,8 @@ export default function Login({ isOpen, setIsOpen }) {
 
       {/* Modal Box */}
       <div
-        className={`relative w-[1100px] h-[650px] bg-white rounded-xl shadow-2xl flex overflow-hidden z-[1000] transition-all duration-300 ${
-          isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-        }`}
+        className={`relative w-[1100px] h-[650px] bg-white rounded-xl shadow-2xl flex overflow-hidden z-[1000] transition-all duration-300 ${isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+          }`}
       >
         {/* Close */}
         <button
@@ -75,27 +76,7 @@ export default function Login({ isOpen, setIsOpen }) {
           </h1>
 
           {/* Role Toggle */}
-          <div className="flex justify-center mb-10">
-            <div className="relative bg-amber-200 rounded-full w-80 h-12 flex">
-              <div
-                className={`absolute top-1 bottom-1 w-1/2 rounded-full bg-amber-400 shadow transition-all duration-300 ${
-                  role === "customer" ? "left-1" : "left-[50%]"
-                }`}
-              />
-
-              {["customer", "agent"].map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setRole(r)}
-                  className={`w-1/2 z-10 font-semibold transition ${
-                    role === r ? "text-red-600" : "text-gray-600"
-                  }`}
-                >
-                  {r.charAt(0).toUpperCase() + r.slice(1)}
-                </button>
-              ))}
-            </div>
-          </div>
+          <ToggleRoleButton role={role} setRole={setRole} />
 
           {/* Email */}
           <div className="mb-6">
@@ -153,19 +134,7 @@ export default function Login({ isOpen, setIsOpen }) {
           </div>
 
           {/* Social Login */}
-          <div className="text-center text-gray-500 text-sm mt-4">
-            <div className="mb-3">— or sign in with —</div>
-            <div className="flex justify-center gap-6 text-2xl">
-              <FontAwesomeIcon
-                icon={faGithub}
-                className="cursor-pointer hover:text-black"
-              />
-              <FontAwesomeIcon
-                icon={faGoogle}
-                className="cursor-pointer hover:text-red-600"
-              />
-            </div>
-          </div>
+          <SocialLogin />
 
         </div>
       </div>
