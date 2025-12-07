@@ -1,14 +1,14 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  LineElement,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-} from "chart.js";
+// import { Line } from "react-chartjs-2";
+// import {
+//   Chart as ChartJS,
+//   LineElement,
+//   PointElement,
+//   CategoryScale,
+//   LinearScale,
+// } from "chart.js";
 
-ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale);
+// ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale);
 
 function Agent_DashBoard() {
   const chartData = {
@@ -115,11 +115,10 @@ function Agent_DashBoard() {
                   <td>{pkg.dest}</td>
                   <td>
                     <span
-                      className={`px-2 py-1 text-xs rounded ${
-                        pkg.status === "Approved"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
+                      className={`px-2 py-1 text-xs rounded ${pkg.status === "Approved"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700"
+                        }`}
                     >
                       {pkg.status}
                     </span>
@@ -186,11 +185,10 @@ function Agent_DashBoard() {
                   <td>{b.date}</td>
                   <td>
                     <span
-                      className={`px-2 py-1 text-xs rounded ${
-                        b.status === "Confirmed"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                      }`}
+                      className={`px-2 py-1 text-xs rounded ${b.status === "Confirmed"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
+                        }`}
                     >
                       {b.status}
                     </span>
@@ -218,13 +216,12 @@ function Agent_DashBoard() {
               >
                 <span>{t.issue}</span>
                 <span
-                  className={`px-2 py-1 text-xs rounded ${
-                    t.status === "Closed"
-                      ? "bg-gray-200 text-gray-600"
-                      : t.status === "New"
+                  className={`px-2 py-1 text-xs rounded ${t.status === "Closed"
+                    ? "bg-gray-200 text-gray-600"
+                    : t.status === "New"
                       ? "bg-blue-100 text-blue-700"
                       : "bg-yellow-100 text-yellow-700"
-                  }`}
+                    }`}
                 >
                   {t.status}
                 </span>

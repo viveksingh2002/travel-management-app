@@ -3,7 +3,7 @@ import User_DashBoard from "../pages/User/User_DashBoard/User_DashBoard";
 import Payment from '../pages/User/Payment/payment';
 import UserBookingDetails from '../pages/User/UserBookingDetails/UserBookingDetails';
 import BrowsePackages from '../pages/User/BrowsePackages/BrowsePackages';
-import Login from '../pages/User/userlogin/login';
+// import Login from '../pages/User/userlogin/login';
 import Support from '../pages/User/Support/Support';
 import UserLayout from '../Layouts/UserLayout';
 import BookingPage from "../pages/User/BookTravelPackage/BookTravelPackage";
@@ -20,7 +20,7 @@ export default function UserRoutes() {
         <Route path="book-package" element={<BookingPage />} /> {/* /user/book-package */}
         <Route path="payment" element={<Payment />} /> {/* /user/payment */}
         <Route path="my-bookings" element={<UserBookingDetails />} /> {/* /user/my-bookings */}
-        <Route path="login" element={<Login />} /> {/* /user/login */}
+        {/* <Route path="login" element={<Login />} /> /user/login */}
         <Route path="support" element={<Support />} /> {/* /user/support */}
 
       </Route>
