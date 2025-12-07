@@ -21,7 +21,7 @@ export default function Footer() {
             <div className="flex items-center gap-4 mb-6">
               <div className="">
                 <a href="#" className="flex items-center text-4xl font-bold dark:text-white">
-                    <img className="w-[55px] h-auto" src="/images/odyssey_logo.png" alt="Logo" />
+                    <img className="w-[55px] h-auto" src={odysseyLogo} alt="Logo" />
                     <span className="">Odyssey</span>
                 </a>
               </div>
