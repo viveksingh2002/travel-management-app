@@ -1,11 +1,9 @@
+import React from "react";
 
-function package_details()
-{
-    return(
-    <div>
-        {/* Sidebar */}
-
-
+function AddPackages() {
+  return (
+    <div className="d-flex">
+   
       {/* Main Content Area */}
       <div className="flex-grow-1 bg-light min-vh-100 p-4">
         <div className="container-fluid">
@@ -14,7 +12,7 @@ function package_details()
           {/* Package Details Card */}
           <div className="card shadow-sm mb-4">
             <div className="card-body">
-              {/* Your existing form fields – all good! */}
+              {/* existing form fields*/}
               <div className="mb-3">
                 <label className="form-label fw-medium">Package Title</label>
                 <input
@@ -132,4 +130,4 @@ function package_details()
   );
 }
 
-export default package_details
+export default AddPackages;
