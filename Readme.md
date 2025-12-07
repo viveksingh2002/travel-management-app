@@ -48,5 +48,7 @@ git checkout -b <branch-name>
 - **Tailwind Css**
 - **Javascript**
 - **React (Vite)**
+- **Redux**
+
 
 
