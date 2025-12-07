@@ -2,9 +2,8 @@
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
-body
-{
-    padding: 0px;
-}
-
 @custom-variant dark (&:where(.dark, .dark *));
+
+body {
+  padding: 0;
+}
