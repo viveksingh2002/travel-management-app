@@ -3,6 +3,8 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom'
 
 import LandingPage from './pages/public/LandingPage/LandingPage';
+import CustomerSignup from './pages/auth/CustomerSignup/CutomerSignup';
+import AgentSignup from './pages/auth/AgentSignup/AgentSignup';
 import AdminRoutes from './Routes/AdminRoutes';
 import AgentRoutes from './Routes/AgentRoutes';
 import UserRoutes from './Routes/UserRoutes';
@@ -13,17 +15,20 @@ function App() {
 
   return (
     <Routes>
-      <Route path='/' element={<LandingPage />}/>
+      <Route path='/' element={<LandingPage />} />
+      <Route path='/customer-signup' element={<CustomerSignup />} />
+      <Route path='/agent-signup' element={<AgentSignup />} />
 
 
-            {/* AdminRoute */}
-            <Route path="/admin/*" element={<AdminRoutes />} />
-            
-            {/* //user Route */}
-            <Route path="/user/*" element={<UserRoutes />} />
 
-            {/* Agent Routes */}
-        <Route path="/agent/*" element={<AgentRoutes />} />
+      {/* AdminRoute */}
+      <Route path="/admin/*" element={<AdminRoutes />} />
+
+      {/* //user Route */}
+      <Route path="/user/*" element={<UserRoutes />} />
+
+      {/* Agent Routes */}
+      <Route path="/agent/*" element={<AgentRoutes />} />
 
     </Routes>
   )
