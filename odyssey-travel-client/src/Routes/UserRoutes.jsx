@@ -15,13 +15,13 @@ export default function UserRoutes() {
       <Route path="/" element={<UserLayout />}>
 
         {/* Nested routes (relative paths) */}
-        <Route path="dashboard" element={<User_DashBoard />} /> {/* /user/dashboard */}
-        <Route path="browse-packages" element={<BrowsePackages />} /> {/* /user/browse-packages */}
-        <Route path="book-package" element={<BookingPage />} /> {/* /user/book-package */}
-        <Route path="payment" element={<Payment />} /> {/* /user/payment */}
-        <Route path="my-bookings" element={<UserBookingDetails />} /> {/* /user/my-bookings */}
-        {/* <Route path="login" element={<Login />} /> /user/login */}
-        <Route path="support" element={<Support />} /> {/* /user/support */}
+        <Route path="dashboard" element={<User_DashBoard />} />
+        <Route path="browse-packages" element={<BrowsePackages />} />
+        <Route path="book-package" element={<BookingPage />} />
+        <Route path="payment" element={<Payment />} />
+        <Route path="my-bookings" element={<UserBookingDetails />} />
+        {/* <Route path="login" element={<Login />} /> */}
+        <Route path="support" element={<Support />} />
 
       </Route>
     </Routes>
