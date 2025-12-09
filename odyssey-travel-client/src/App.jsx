@@ -11,6 +11,7 @@ import UserRoutes from './Routes/UserRoutes';
 import AgentLayout from './Layouts/AgentLayout';
 import Agent_DashBoard from './pages/Agent/agent_DashBoard/Agents_DashBoard';
 import AddPackage from './pages/Agent/AddPackages/AddPackages';
+import AdminLogin from './pages/auth/AdminLogin/AdminLogin';
 function App() {
 
   return (
@@ -18,6 +19,8 @@ function App() {
       <Route path='/' element={<LandingPage />} />
       <Route path='/customer-signup' element={<CustomerSignup />} />
       <Route path='/agent-signup' element={<AgentSignup />} />
+      <Route path='/admin-login' element={<AdminLogin />} />
+      
 
 
 
