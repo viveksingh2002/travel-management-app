@@ -1,50 +1,93 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGauge,
+  faUsers,
+  faInbox,
+  faUserCheck,
+  faBoxOpen,
+  faLifeRing,
+  faRightFromBracket
+} from "@fortawesome/free-solid-svg-icons";
 
-function AdminSidebar() {
+function AdminSideBar() {
+  const [open, setOpen] = useState(false);
+  const location = useLocation();
+
+  // Sidebar menu items
+  const menuItems = [
+    { name: "Dashboard", path: "/admin/dashboard", icon: faGauge },
+    { name: "User Management", path: "/admin/user-management", icon: faUsers },
+    { name: "Inbox", path: "/admin/inbox", icon: faInbox },
+    { name: "Agent Approval", path: "/admin/agent-approval", icon: faUserCheck },
+    { name: "Travel Package Approval", path: "/admin/travel-package-approval", icon: faBoxOpen },
+    { name: "Support Tickets", path: "/admin/support-tickets", icon: faLifeRing },
+  ];
+
   return (
-    <div
-      className="border-end bg-light d-flex flex-column p-3"
-      style={{
-        width: "240px",
-        height: "100vh",
-        position: "fixed",
-        top: 0,
-        left: 0,
-      }}
-    >
-      <h4 className="fw-bold text-primarys mb-4">Odyssey</h4>
+    <>
+      {/* Mobile Toggle Button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className="sm:hidden fixed top-20 left-2 bg-blue-600 text-white p-2 rounded-lg z-50"
+      >
+        ☰
+      </button>
 
-      <ul className="nav flex-column">
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/admin/dashboard">Dashboard</Link>
-        </li>
+      <aside
+        className={`fixed top-0 left-0 z-40 w-64 h-screen mt-[80px] bg-white dark:bg-gray-900 border-r border-gray-300 dark:border-gray-700 
+        transition-transform duration-300 
+        ${open ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`}
+      >
+        <div className="h-full px-3 py-4 overflow-y-auto">
 
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/admin/user-management">User Management</Link>
-        </li>
+          {/* Menu List */}
+          <ul className="space-y-2 font-medium">
 
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/admin/agent-approva">Agent Approval</Link>
-        </li>
+            {menuItems.map((item, index) => {
+              const active = location.pathname === item.path;
 
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/admin/travel-package-approval">Travel Package Approval</Link>
-        </li>
+              return (
+                <li key={index}>
+                  <Link
+                    to={item.path}
+                    className={`flex items-center px-3 py-2 rounded-lg transition
+                      ${active
+                        ? "bg-blue-600 text-white"
+                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"}
+                    `}
+                  >
+                    <FontAwesomeIcon
+                      icon={item.icon}
+                      className={`w-5 h-5 ${active ? "text-white" : "text-gray-500 dark:text-gray-400"}`}
+                    />
+                    <span className="ms-3">{item.name}</span>
+                  </Link>
+                </li>
+              );
+            })}
 
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/admin/support-tickets">Support Tickets</Link>
-        </li>
+          </ul>
 
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/bot">ChatBot</Link>
-        </li>
+          {/* Bottom Sign Out */}
+          <ul className="border-t mt-4 pt-4 border-gray-300 dark:border-gray-700">
+            <li>
+              <Link
+                to="/"
+                className="flex items-center px-3 py-2 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-800"
+              >
+                <FontAwesomeIcon icon={faRightFromBracket} className="w-5 h-5" />
+                <span className="ms-3">Sign Out</span>
+              </Link>
+            </li>
+          </ul>
 
-        <li className="nav-item mb-2">
-          <Link className="nav-link text-dark" to="/logout">Logout</Link>
-        </li>
-      </ul>
-    </div>
+        </div>
+      </aside>
+    </>
   );
 }
 
-export default AdminSidebar;
+
+export default AdminSideBar
