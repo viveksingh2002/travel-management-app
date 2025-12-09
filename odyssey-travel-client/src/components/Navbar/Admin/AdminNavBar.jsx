@@ -1,4 +1,4 @@
-import LDButton from '../../LightDarkBUtton/LightDarkButton';
+import LDButton from '../../LightDarkButton/LightDarkButton';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -21,7 +21,7 @@ function Navbar() {
       <nav className="max-w-[85rem] mx-auto px-4 py-3 flex items-center justify-between">
         {/* LEFT - LOGO */}
         <a
-          href="#"
+          href="/"
           className="flex items-center text-3xl font-bold dark:text-white"
         >
           <img

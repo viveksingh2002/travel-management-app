@@ -10,17 +10,17 @@ function Navbar() {
     const [showLogin, setShowLogin] = useState(false);
 
     const navLinks = [
-        { name: "Home", href: "#home", active: true },
-        { name: "Packages", href: "#packages", active: false },
-        { name: "Services", href: "#services", active: false },
+        { name: "Home", href: "/", active: true },
+        { name: "Packages", href: "/packages", active: false },
+        { name: "Services", href: "/services", active: false },
     ];
 
     return (
-        <header className="w-full bg-white dark:bg-neutral-800 shadow-sm px-4 z-50 relative">
+        <header className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-200 dark:border-gray-700 shadow-sm px-4 h-[80px] z-50">
             <nav className="max-w-[85rem] mx-auto px-4 py-3 flex items-center justify-between">
                 {/* LEFT - LOGO */}
                 <a
-                    href="#"
+                    href="/"
                     className="flex items-center text-3xl font-bold dark:text-white"
                 >
                     <img
