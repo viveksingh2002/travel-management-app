@@ -1,5 +1,5 @@
 package com.odyssey.entity;
 
-public class Role {
-
+public enum Role {
+    ADMIN,AGENT,CLIENT
 }
