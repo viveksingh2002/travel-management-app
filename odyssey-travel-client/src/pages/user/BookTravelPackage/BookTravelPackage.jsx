@@ -1,239 +1,212 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import useBookTravelPackage, { ageOptions, genderOptions, relationOptions } from "./useBookTravelPackage";
 
-const defaultMember = {
-  fullName: "",
-  age: "25-39 Years",
-  gender: "Female",
-  relation: "Spouse",
-};
+export default function BookingPage() {
+  // Use our custom logic hook
+  const {
+    packageData,
+    loading,
+    primaryTraveler,
+    updatePrimaryDetail,
+    familyMembers,
+    addMember,
+    removeMember,
+    updateMember,
+    specialRequest,
+    setSpecialRequest,
+    priceDetails,
+    handleProceed
+  } = useBookTravelPackage();
 
-const ageOptions = ["18-24 Years", "25-39 Years", "40-60 Years"];
-const genderOptions = ["Male", "Female", "Other"];
-const relationOptions = ["Spouse", "Sibling", "Parent", "Friend"];
-
-
-
-function BookingPage() {
-  const [familyMembers, setFamilyMembers] = useState([defaultMember]);
-const navigate=useNavigate();
-const handleProceed=()=>
-{
-  
-  navigate("/user/payment");
-}
-  const addMember = () => {
-    setFamilyMembers((prev) => [
-      ...prev,
-      { fullName: "", age: "18-24 Years", gender: "Male", relation: "Sibling" },
-    ]);
-  };
-
-  const removeMember = (index) => {
-    setFamilyMembers((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  // Controlled inputs for family members for future backend linking
-  const updateMember = (index, field, value) => {
-    setFamilyMembers((prev) =>
-      prev.map((member, i) =>
-        i === index ? { ...member, [field]: value } : member
-      )
-    );
-  };
+  // if (loading) {
+  //   return (
+  //     <div className="bg-white dark:bg-gray-700 min-h-screen flex items-center justify-center">
+  //       <p className="text-xl font-bold text-blue-500 animate-pulse">Loading package info...</p>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="container my-5" style={{ maxWidth: "900px" }}>
-      {/* Primary Traveler Details */}
-      <div className="card p-4 mb-4 shadow-sm">
-        <h5 className="mb-3"><b>Primary Traveler Details</b></h5>
-        <label className="form-label">Full Name</label>
-        <input
-          type="text"
-          className="form-control mb-3"
-          placeholder="Full Name"
-          // Controlled for future backend integration
-          onChange={() => {}}
-        />
-        <label className="form-label">Email</label>
-        <input
-          type="email"
-          className="form-control mb-3"
-          placeholder="example@email.com"
-          onChange={() => {}}
-        />
-        <label className="form-label">Mobile Number</label>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="+91 XXXXXXXXXX"
-          onChange={() => {}}
-        />
-      </div>
+    <div className="bg-white dark:bg-gray-700 min-h-screen py-10 transition-colors duration-300">
+      <div className="max-w-4xl mx-auto px-6">
 
-      {/* Additional Family Members */}
-      <div className="card p-4 mb-4 shadow-sm">
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <h5>Additional Family Members</h5>
-          <button className="btn btn-outline-primary btn-sm" onClick={addMember}>
-            + Add Member
+        <h1 className="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10">
+          Booking: {packageData ? packageData.title : "Travel Package"}
+        </h1>
+
+        {/* 1. Primary Traveler Details */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
+          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-6 border-b pb-2">
+            Primary Traveler Details
+          </h2>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+              <input
+                type="text"
+                placeholder="Enter your full name"
+                className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                value={primaryTraveler.fullName}
+                onChange={(e) => updatePrimaryDetail("fullName", e.target.value)}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                <input
+                  type="email"
+                  placeholder="example@email.com"
+                  className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  value={primaryTraveler.email}
+                  onChange={(e) => updatePrimaryDetail("email", e.target.value)}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mobile Number</label>
+                <input
+                  type="text"
+                  placeholder="+91 XXXXXXXXXX"
+                  className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                  value={primaryTraveler.mobile}
+                  onChange={(e) => updatePrimaryDetail("mobile", e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Additional Family Members */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
+          <div className="flex justify-between items-center mb-6 border-b pb-2">
+            <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400">
+              Family Members
+            </h2>
+            <button
+              onClick={addMember}
+              className="bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 px-4 py-2 rounded font-bold text-sm hover:bg-blue-200 dark:hover:bg-blue-800 transition shadow-sm"
+            >
+              + Add Member
+            </button>
+          </div>
+
+          <div className="space-y-6">
+            {familyMembers.map((member, index) => (
+              <div key={index} className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-lg border dark:border-gray-600 relative group">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="bg-gray-200 dark:bg-gray-600 px-3 py-1 rounded text-xs font-bold text-gray-700 dark:text-gray-200">
+                    MEMBER {index + 1}
+                  </span>
+                  {familyMembers.length > 1 && (
+                    <button
+                      onClick={() => removeMember(index)}
+                      className="text-red-500 hover:text-red-700 font-bold text-sm"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <div className="md:col-span-1">
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      className="w-full p-2 border dark:border-gray-600 rounded bg-white dark:bg-gray-900 dark:text-white text-sm"
+                      value={member.fullName}
+                      onChange={(e) => updateMember(index, "fullName", e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">Age Range</label>
+                    <select
+                      className="w-full p-2 border dark:border-gray-600 rounded bg-white dark:bg-gray-900 dark:text-white text-sm"
+                      value={member.age}
+                      onChange={(e) => updateMember(index, "age", e.target.value)}
+                    >
+                      {ageOptions.map(opt => <option key={opt}>{opt}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">Gender</label>
+                    <select
+                      className="w-full p-2 border dark:border-gray-600 rounded bg-white dark:bg-gray-900 dark:text-white text-sm"
+                      value={member.gender}
+                      onChange={(e) => updateMember(index, "gender", e.target.value)}
+                    >
+                      {genderOptions.map(opt => <option key={opt}>{opt}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-500 dark:text-gray-400 mb-1">Relation</label>
+                    <select
+                      className="w-full p-2 border dark:border-gray-600 rounded bg-white dark:bg-gray-900 dark:text-white text-sm"
+                      value={member.relation}
+                      onChange={(e) => updateMember(index, "relation", e.target.value)}
+                    >
+                      {relationOptions.map(opt => <option key={opt}>{opt}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* 3. Special Requests */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
+          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+            Special Requests
+          </h2>
+          <textarea
+            className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none h-24"
+            placeholder="E.g. Vegetarian meals, accessibility, etc."
+            value={specialRequest}
+            onChange={(e) => setSpecialRequest(e.target.value)}
+          />
+        </div>
+
+        {/* 4. Package & Price Summary */}
+        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-10">
+          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-6 border-b pb-2">
+            Payment Summary
+          </h2>
+
+          <div className="space-y-3 text-gray-700 dark:text-gray-300">
+            <div className="flex justify-between">
+              <span>{priceDetails.totalTravelers} Travelers (Base Price)</span>
+              <span>₹{priceDetails.basePrice}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Tax & Booking Fees</span>
+              <span>+₹{priceDetails.taxesFees}</span>
+            </div>
+            <div className="flex justify-between text-green-600 dark:text-green-400">
+              <span>Special Discounts</span>
+              <span>-₹{priceDetails.discounts}</span>
+            </div>
+
+            <hr className="dark:border-gray-700 my-4" />
+
+            <div className="flex justify-between text-xl font-black text-gray-900 dark:text-white">
+              <span>Final Total</span>
+              <span>₹{priceDetails.finalAmount}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Button */}
+        <div className="text-center pb-20">
+          <button
+            onClick={handleProceed}
+            className="bg-blue-600 text-white px-12 py-4 rounded-full font-bold text-lg hover:bg-blue-700 transition shadow-xl hover:shadow-blue-500/20 active:scale-95"
+          >
+            Confirm & Proceed to Payment
           </button>
         </div>
 
-        {familyMembers.map((member, index) => (
-          <div key={index} className="border p-3 rounded mb-3 bg-light">
-            <div className="d-flex justify-content-between mb-2">
-              <strong>Member {index + 1}</strong>
-              {familyMembers.length > 1 && (
-                <button
-                  className="btn btn-sm btn-outline-danger"
-                  onClick={() => removeMember(index)}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-
-            <div className="row">
-              <div className="col-md-3 mb-3">
-                <label className="form-label">Full Name</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Name"
-                  value={member.fullName}
-                  onChange={(e) => updateMember(index, "fullName", e.target.value)}
-                />
-              </div>
-
-              <div className="col-md-3 mb-3">
-                <label className="form-label">Age</label>
-                <select
-                  className="form-select"
-                  value={member.age}
-                  onChange={(e) => updateMember(index, "age", e.target.value)}
-                >
-                  {ageOptions.map((age) => (
-                    <option key={age}>{age}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="col-md-3 mb-3">
-                <label className="form-label">Gender</label>
-                <select
-                  className="form-select"
-                  value={member.gender}
-                  onChange={(e) => updateMember(index, "gender", e.target.value)}
-                >
-                  {genderOptions.map((gender) => (
-                    <option key={gender}>{gender}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="col-md-3 mb-3">
-                <label className="form-label">Relation</label>
-                <select
-                  className="form-select"
-                  value={member.relation}
-                  onChange={(e) => updateMember(index, "relation", e.target.value)}
-                >
-                  {relationOptions.map((relation) => (
-                    <option key={relation}>{relation}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Special Requests */}
-      <div className="card p-4 mb-4 shadow-sm">
-        <h5 className="mb-3">Special Requests</h5>
-        <textarea
-          className="form-control"
-          rows="4"
-          placeholder="E.g. Vegetarian meals, window seat preference, accessibility requirements..."
-          onChange={() => {}}
-        ></textarea>
-      </div>
-
-      {/* Package Summary */}
-      <div className="card p-4 mb-4 shadow-sm">
-        <h5 className="mb-3">Package Summary</h5>
-
-        <div className="row mb-3">
-          <div className="col-6">Package Name:</div>
-          <div className="col-6 text-end fw-bold">Himalayan Thrills of Manali</div>
-        </div>
-
-        <div className="row mb-3">
-          <div className="col-6">Destination:</div>
-          <div className="col-6 text-end fw-bold">Manali, Himachal, India</div>
-        </div>
-
-        <div className="row mb-3">
-          <div className="col-6">Travel Dates:</div>
-          <div className="col-6 text-end fw-bold">Aug 15 – Aug 22, 2025</div>
-        </div>
-
-        <div className="row mb-3">
-          <div className="col-6">Price per Person:</div>
-          <div className="col-6 text-end fw-bold">₹1200</div>
-        </div>
-
-        <div className="row mb-2">
-          <div className="col-6">Number of Travelers:</div>
-          <div className="col-6 text-end fw-bold">{familyMembers.length}</div>
-        </div>
-
-        <hr />
-
-        <div className="row">
-          <div className="col-6 fw-bold">Total Package Price:</div>
-          <div className="col-6 text-end fw-bold">
-            ₹{(1200 * familyMembers.length).toFixed(2)}
-          </div>
-        </div>
-      </div>
-
-      {/* Payment Preview */}
-      <div className="card p-4 mb-4 shadow-sm">
-        <h5 className="mb-3">Payment Preview</h5>
-
-        <div className="row mb-2">
-          <div className="col-6">Travelers ({familyMembers.length} persons):</div>
-          <div className="col-6 text-end">₹{(1200 * familyMembers.length).toFixed(2)}</div>
-        </div>
-
-        <div className="row mb-2">
-          <div className="col-6">Taxes & Fees:</div>
-          <div className="col-6 text-end">₹150.00</div>
-        </div>
-
-        <div className="row mb-2">
-          <div className="col-6">Discounts:</div>
-          <div className="col-6 text-end">-₹50.00</div>
-        </div>
-
-        <hr />
-
-        <div className="row mb-2">
-          <h5 className="col-6">Final Amount Payable:</h5>
-          <h5 className="col-6 text-end fw-bold">
-            ₹{(1200 * familyMembers.length + 150 - 50).toFixed(2)}
-          </h5>
-        </div>
-      </div>
-
-      {/* Proceed Button */}
-      <div className="text-center mb-5">
-        <button className="btn btn-primary px-5 py-2" onClick={handleProceed}>Proceed to Payment</button>
       </div>
     </div>
   );
 }
-
-export default BookingPage;
