@@ -1,5 +1,7 @@
 package com.odyssey.service.impl;
 
-public class AuthServiceImpl {
+import com.odyssey.service.AuthService;
+
+public class AuthServiceImpl implements AuthService {
 
 }

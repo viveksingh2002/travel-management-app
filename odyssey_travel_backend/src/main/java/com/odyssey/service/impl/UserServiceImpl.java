@@ -1,5 +1,7 @@
 package com.odyssey.service.impl;
 
-public class UserServiceImpl {
+import com.odyssey.service.UserService;
+
+public class UserServiceImpl implements UserService {
 
 }

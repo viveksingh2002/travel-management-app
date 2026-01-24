@@ -1,5 +1,7 @@
 package com.odyssey.service.impl;
 
-public class PaymentServiceImpl {
+import com.odyssey.service.PaymentService;
+
+public class PaymentServiceImpl implements PaymentService {
 
 }
