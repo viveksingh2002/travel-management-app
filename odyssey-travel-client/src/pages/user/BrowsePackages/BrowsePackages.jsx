@@ -1,76 +1,70 @@
-// TravelPackages.jsx
-import React, { useEffect, useState } from "react";
-import "./BrowsePackages.css";
+import React from "react";
+import useBrowsePackages from "./useBrowsePackages"; // Import our logic hook
+import { useNavigate } from "react-router-dom";
+export default function BrowsePackages() {
+    const {
+        packages,
+        loading
+    } = useBrowsePackages();
 
+    const location=useNavigate();
+    const toBookingPage=(packageId)=>{
+      location("/user/book-package/${packageId}")
+    }
+    return (
+        <div className="bg-white dark:bg-gray-700 min-h-screen min-w-screen font-sans transition-colors duration-300">
+            <div className="max-w-6xl mx-auto">
 
-const BrowsePackages = () => {
-  const [packages, setPackages] = useState([]);
+                {/* Header Section */}
+                <div className="mb-10 text-center">
+                    <h1 className="text-4xl font-extrabold text-gray-800 dark:text-white">
+                        Available Holiday Packages
+                    </h1>
+                </div>
 
-  useEffect(() => {
-    // Simulated fetch from backend
-    const fetchData = async () => {
-      const data = [
-        {
-          id: 1,
-          title: "Beach Paradise",
-          duration: "5 Days, 4 Nights",
-          price: "$799",
-          description: "Relax on pristine beaches with crystal-clear water.",
-          image:
-            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          id: 2,
-          title: "Mountain Adventure",
-          duration: "7 Days, 6 Nights",
-          price: "$999",
-          description: "Explore mountain trails, camping, and breathtaking views.",
-          image:
-            "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80",
-        },
-        {
-          id: 3,
-          title: "City Explorer",
-          duration: "3 Days, 2 Nights",
-          price: "$499",
-          description: "Discover vibrant city life, museums, and fine dining.",
-          image:
-            "https://images.unsplash.com/photo-1468071174046-657d9d351a40?auto=format&fit=crop&w=800&q=80",
-        },
-      ];
-      setPackages(data);
-    };
+                {/* Loading Message */}
+                {loading && (
+                    <p className="text-center font-bold text-blue-500 dark:text-blue-400 mb-10 animate-pulse text-lg">
+                        Loading packages...
+                    </p>
+                )}
 
-    fetchData();
-  }, []);
+                {/* Package Listing */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {packages.length > 0 ? (
+                        packages.map((pkg) => (
+                            <div
+                                key={pkg.package_id}
+                                className="border dark:border-gray-700 rounded-xl p-6 bg-white dark:bg-gray-800 shadow hover:shadow-xl dark:shadow-none transition-all flex flex-col justify-between"
+                            >
+                                <div>
+                                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">{pkg.title}</h2>
+                                    <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
+                                        {pkg.description}
+                                    </p>
+                                </div>
 
-  return (
-    <div className="container my-4">
-      <h1 className="text-center mb-4">Our Travel Packages</h1>
-      <div className="row gy-4">
-        {packages.map(({ id, title, duration, price, description, image }) => (
-          <div key={id} className="col-sm-12 col-md-6 col-lg-4">
-            <div className="card h-100 shadow-sm">
-              <img src={image} className="card-img-top" alt={title} style={{ height: 160, objectFit: "cover" }} />
-              <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{title}</h5>
-                <p className="card-text text-muted flex-grow-1">{description}</p>
-                <p className="fw-bold text-primary">
-                  {duration} - {price}
-                </p>
-                <button
-                  className="btn btn-primary mt-auto"
-                  onClick={() => alert(`You selected the "${title}" package!`)}
-                >
-                  Book Now
-                </button>
-              </div>
+                                <div className="mt-4 border-t dark:border-gray-700 pt-4 flex items-center justify-between">
+                                    <p className="text-2xl font-extrabold text-blue-600 dark:text-blue-400">
+                                        ₹{pkg.price}
+                                    </p>
+                                    <span className="text-xs text-gray-400 dark:text-gray-500 italic">
+                                        Agent ID: {pkg.created_by_user_id}
+                                    </span>
+                                </div>
+
+                                <button className="w-full mt-4 bg-gray-100 dark:bg-gray-700 py-2 rounded font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition" onClick={()=>toBookingPage(pkg.package_id)}>
+                                    Select Package
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="col-span-full text-center py-20 text-gray-400 dark:text-gray-500 text-lg">
+                            No holiday packages available at the moment.
+                        </div>
+                    )}
+                </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-export default BrowsePackages;
+        </div>
+    );
+}
