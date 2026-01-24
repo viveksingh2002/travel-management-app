@@ -1,5 +1,5 @@
 package com.odyssey.service;
 
-public class AuthService {
+public interface AuthService {
 
 }

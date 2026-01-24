@@ -1,5 +1,5 @@
 package com.odyssey.service;
 
-public class BookingService {
+public interface BookingService {
 
 }

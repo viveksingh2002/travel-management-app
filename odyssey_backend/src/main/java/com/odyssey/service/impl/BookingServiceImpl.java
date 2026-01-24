@@ -1,5 +1,7 @@
 package com.odyssey.service.impl;
 
-public class BookingServiceImpl {
+import com.odyssey.service.BookingService;
+
+public class BookingServiceImpl implements BookingService {
 
 }
