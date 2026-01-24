@@ -9,11 +9,11 @@
 		<version>3.5.8</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.cdac</groupId>
-	<artifactId>spring_boot_backend_template</artifactId>
-	<version>0.0.1</version>
-	<name>spring_boot_backend_template</name>
-	<description>Template for Spring Boot based Backend REST API</description>
+	<groupId>com.odyssey</groupId>
+	<artifactId>odyssey-travel-backend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>travel-service</name>
+	<description>Backend system for Odyssey Travel Management</description>
 	<url />
 	<licenses>
 		<license />
