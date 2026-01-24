@@ -1,129 +1,363 @@
-import React from "react";
+import React, { useState } from 'react';
 
 function AddPackages() {
-  return (
-    <div className="d-flex">
-   
-      {/* Main Content Area */}
-      <div className="flex-grow-1 bg-light min-vh-100 p-4">
-        <div className="container-fluid">
-          <h2 className="mb-4 fw-semibold">Package Details</h2>
+  const [packageData, setPackageData] = useState({
+    title: 'Explore Manali in 7 Days',
+    description:
+      "Discover the magic of Manali with our exclusive 7-day tour package. Experience the ultimate Himalayan adventure with thrilling activities amidst Manali's snow-capped peaks and valleys.",
+    destination: 'Manali, Himachal Pradesh',
+    price: '25000',
+    status: 'Draft',
+    startDate: '2025-09-15',
+    endDate: '2025-09-22',
+    maxTravelers: 20,
+  });
 
-          {/* Package Details Card */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              {/* existing form fields*/}
-              <div className="mb-3">
-                <label className="form-label fw-medium">Package Title</label>
+  const [itinerary, setItinerary] = useState([
+    'Arrival in Manali, hotel check-in, evening at leisure.',
+    'Visit Hadimba Temple, Manu Temple, Vashisht Hot Springs.',
+    'Full day adventure in Solang Valley – paragliding, zorbing, ropeway.',
+    'Rohtang Pass excursion (subject to permit), snow activities.',
+    'Visit Rahalla Falls, local market shopping.',
+    'Departure day – transfer to bus/volvo stand.',
+  ]);
+
+  const [images, setImages] = useState([]); // Store real File objects for backend
+  const [imagesPreview, setImagesPreview] = useState([]); // For display only
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setPackageData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleItineraryChange = (index, value) => {
+    const newItinerary = [...itinerary];
+    newItinerary[index] = value;
+    setItinerary(newItinerary);
+  };
+
+  const addNewDay = () => {
+    setItinerary((prev) => [...prev, '']);
+  };
+
+  const removeDay = (index) => {
+    setItinerary((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    // Store real files for upload
+    setImages((prev) => [...prev, ...files]);
+
+    // Generate previews
+    const previews = files.map((file) => ({
+      url: URL.createObjectURL(file),
+      name: file.name,
+    }));
+    setImagesPreview((prev) => [...prev, ...previews]);
+  };
+
+  const removeImage = (index) => {
+    // Revoke preview URL
+    URL.revokeObjectURL(imagesPreview[index].url);
+
+    // Remove from both preview and real files
+    setImagesPreview((prev) => prev.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSubmit = async (e, action = 'submit') => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    // Append package data as JSON
+    formData.append(
+      'package',
+      new Blob([JSON.stringify(packageData)], { type: 'application/json' })
+    );
+
+    // Append itinerary as array
+    formData.append('itinerary', JSON.stringify(itinerary));
+
+    // Append images
+    images.forEach((file) => {
+      formData.append('images', file);
+    });
+
+    // add action type (draft vs submit)
+    formData.append('action', action); // 'draft' or 'submit'
+
+    console.log(`Submitting as ${action}:`, {
+      package: packageData,
+      itinerary,
+      images: images.map((f) => f.name),
+    });
+
+
+    alert(`Form submitted as ${action} — check console`);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-10 px-4 sm:px-6 lg:px-8 transition-colors duration-100">
+      <div className="mx-auto max-w-5xl lg:max-w-6xl xl:max-w-7xl">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-8">
+          Add / Edit Package
+        </h1>
+
+        {/* Package Details */}
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-gray-200 dark:border-gray-700 p-6 md:p-8 mb-10 transition-all duration-150 hover:shadow-lg">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+            Package Details
+          </h2>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Package Title
+              </label>
+              <input
+                type="text"
+                name="title"
+                value={packageData.title}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150"
+                placeholder="Enter package title"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Description
+              </label>
+              <textarea
+                name="description"
+                rows={5}
+                value={packageData.description}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150 resize-y min-h-[120px]"
+                placeholder="Describe the package..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Destination
+              </label>
+              <input
+                type="text"
+                name="destination"
+                value={packageData.destination}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150"
+                placeholder="e.g. Manali, Himachal Pradesh"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Price (₹)
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-500 dark:text-gray-400">
+                  ₹
+                </div>
                 <input
                   type="text"
-                  className="form-control"
-                  defaultValue="Explore Manali in 7 Days"
+                  name="price"
+                  value={packageData.price}
+                  onChange={handleInputChange}
+                  className="w-full pl-10 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150"
+                  placeholder="25000"
                 />
-              </div>
-
-              <div className="mb-3">
-                <label className="form-label fw-medium">Description</label>
-                <textarea
-                  className="form-control"
-                  rows="4"
-                  defaultValue="Discover the magic of Manali with our exclusive 7-day tour package. Experience the ultimate Himalayan adventure with thrilling activities amidst Manali's snow-capped peaks and valleys."
-                />
-              </div>
-
-              <div className="row g-3">
-                <div className="col-md-6">
-                  <label className="form-label">Destination</label>
-                  <input type="text" className="form-control" defaultValue="Manali, Himachal Pradesh" />
-                </div>
-                <div className="col-md-3">
-                  <label className="form-label">Price (₹)</label>
-                  <div className="input-group">
-                    <span className="input-group-text">₹</span>
-                    <input type="text" className="form-control" defaultValue="25000" />
-                  </div>
-                </div>
-                <div className="col-md-3">
-                  <label className="form-label">Status</label>
-                  <select className="form-select" defaultValue="Draft">
-                    <option>Draft</option>
-                    <option>Published</option>
-                    <option>Archived</option>
-                  </select>
-                </div>
-
-                <div className="col-md-4">
-                  <label className="form-label">Start Date</label>
-                  <input type="date" className="form-control" defaultValue="2025-09-15" />
-                </div>
-                <div className="col-md-4">
-                  <label className="form-label">End Date</label>
-                  <input type="date" className="form-control" defaultValue="2025-09-22" />
-                </div>
-                <div className="col-md-4">
-                  <label className="form-label">Max Travelers</label>
-                  <input type="number" className="form-control" defaultValue="20" min="1" />
-                </div>
               </div>
             </div>
-          </div>
 
-          {/* Image Upload Section */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title">Package Images</h5>
-              <div className="border border-dashed rounded-3 p-5 text-center bg-white">
-                <p className="text-muted mb-3">Drag & drop images here or click to upload</p>
-                <div className="d-flex justify-content-center gap-4 flex-wrap">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="border border-dashed rounded bg-light d-flex align-items-center justify-content-center text-muted"
-                      style={{ width: "180px", height: "120px" }}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Status
+              </label>
+              <select
+                name="status"
+                value={packageData.status}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150 appearance-none"
+              >
+                <option>Draft</option>
+                <option>Published</option>
+                <option>Archived</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Start Date
+              </label>
+              <input
+                type="date"
+                name="startDate"
+                value={packageData.startDate}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                End Date
+              </label>
+              <input
+                type="date"
+                name="endDate"
+                value={packageData.endDate}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Max Travelers
+              </label>
+              <input
+                type="number"
+                name="maxTravelers"
+                min="1"
+                value={packageData.maxTravelers}
+                onChange={handleInputChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150"
+                placeholder="20"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Images Upload */}
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-gray-200 dark:border-gray-700 p-6 md:p-8 mb-10 transition-all duration-150 hover:shadow-lg">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+            Package Images
+          </h2>
+
+          <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl p-10 text-center transition-colors">
+            <p className="text-gray-500 dark:text-gray-400 mb-6 text-lg">
+              Drag & drop images here or click to upload
+            </p>
+
+            <label className="cursor-pointer inline-block">
+              <span className="inline-flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white font-medium rounded-xl shadow-sm hover:shadow transition-all duration-150">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                </svg>
+                Choose Files
+              </span>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
+
+            {imagesPreview.length > 0 && (
+              <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                {imagesPreview.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="relative group rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-150"
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.name}
+                      className="w-full h-44 object-cover"
+                    />
+                    <button
+                      onClick={() => removeImage(idx)}
+                      className="absolute top-3 right-3 bg-red-600 hover:bg-red-700 text-white rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-150 transform hover:scale-110"
                     >
-                      <small>Image {i}</small>
-                    </div>
-                  ))}
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Itinerary */}
+        <div className="bg-white dark:bg-gray-800 shadow-md rounded-2xl border border-gray-200 dark:border-gray-700 p-6 md:p-8 mb-10 transition-all duration-150 hover:shadow-lg">
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">
+            Itinerary
+          </h2>
+
+          <div className="space-y-5">
+            {itinerary.map((day, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-5 bg-gray-50 dark:bg-gray-700/30 p-5 rounded-xl border border-gray-200 dark:border-gray-600 hover:border-indigo-300 dark:hover:border-indigo-500 transition-all duration-150"
+              >
+                <div className="flex-shrink-0 mt-1">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 font-semibold text-lg shadow-sm">
+                    {index + 1}
+                  </span>
+                </div>
+
+                <div className="flex-1 flex items-center gap-3">
+                  <textarea
+                    value={day}
+                    onChange={(e) => handleItineraryChange(index, e.target.value)}
+                    rows={3}
+                    className="flex-1 px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150 resize-y min-h-[90px]"
+                    placeholder="Describe day activities..."
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeDay(index)}
+                    className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-all duration-150"
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
 
-          {/* Itinerary */}
-          <div className="card shadow-sm mb-4">
-            <div className="card-body">
-              <h5 className="card-title mb-4">Itinerary</h5>
-              {[
-                "Arrival in Manali, hotel check-in, evening at leisure.",
-                "Visit Hadimba Temple, Manu Temple, Vashisht Hot Springs.",
-                "Full day adventure in Solang Valley – paragliding, zorbing, ropeway.",
-                "Rohtang Pass excursion (subject to permit), snow activities.",
-                "Visit Rahalla Falls, local market shopping.",
-                "Departure day – transfer to bus/volvo stand.",
-              ].map((day, i) => (
-                <div className="d-flex align-items-start mb-3 gap-3" key={i}>
-                  <span className="badge bg-primary rounded-pill mt-1" style={{ width: "32px", height: "32px" }}>
-                    {i + 1}
-                  </span>
-                  <textarea className="form-control" rows="2" defaultValue={day} />
-                </div>
-              ))}
-              <button className="btn btn-outline-primary btn-sm mt-3">
-                + Add Day
-              </button>
-            </div>
-          </div>
+          <button
+            type="button"
+            onClick={addNewDay}
+            className="mt-8 inline-flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white font-medium rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-150"
+          >
+            + Add Day
+          </button>
+        </div>
 
-          {/* Action Buttons */}
-          <div className="d-flex justify-content-end gap-3 mb-5">
-            <button className="btn btn-outline-secondary px-4">Cancel</button>
-            <button className="btn btn-secondary px-4">Save as Draft</button>
-            <button className="btn btn-primary px-5">Submit for Approval</button>
-          </div>
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row justify-end gap-4">
+          <button
+            type="button"
+            className="px-8 py-3.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all duration-150"
+            onClick={() => handleSubmit({ preventDefault: () => {} }, 'cancel')}
+          >
+            Cancel
+          </button>
 
-          <footer className="text-center text-muted small py-4">
-            © 2025 Odyssey Tours & Travels. All rights reserved.
-          </footer>
+          <button
+            type="button"
+            className="px-8 py-3.5 border border-indigo-400 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950 rounded-xl font-medium transition-all duration-150"
+            onClick={(e) => handleSubmit(e, 'draft')}
+          >
+            Save as Draft
+          </button>
+
+          <button
+            type="submit"
+            className="px-10 py-3.5 bg-indigo-600 hover:bg-indigo-700 dark:bg-indigo-700 dark:hover:bg-indigo-600 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-150"
+            onClick={(e) => handleSubmit(e, 'submit')}
+          >
+            Submit for Approval
+          </button>
         </div>
       </div>
     </div>
