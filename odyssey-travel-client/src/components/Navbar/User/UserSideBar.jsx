@@ -17,12 +17,11 @@ function UserSideBar() {
 
     // Sidebar menu items
     const menuItems = [
-        { name: "Dashboard", path: "/agent/dashboard", icon: faGauge },
-        { name: "My Bookings", path: "/agent/add-package", icon: faPlusCircle },
-        { name: "Browse Packages", path: "/agent/my-packages", icon: faBoxOpen },
-        { name: "Booking Overviews", path: "/agent/booking-overview", icon: faBook },
-        { name: "Edit About Us", path: "/agent/edit-about-us", icon: faInfoCircle },
-        { name: "Support Tickets", path: "/agent/support-ticket", icon: faLifeRing },
+        { name: "Dashboard", path: "/user/dashboard", icon: faGauge },
+        { name: "My Bookings", path: "/user/my-bookings", icon: faPlusCircle },
+        { name: "Browse Packages", path: "/user/browse-packages", icon: faBoxOpen },
+        { name: "Book packages", path: "/user/book-package", icon: faBook },
+        { name: "Support Tickets", path: "/user/support", icon: faLifeRing },
     ];
 
     return (
