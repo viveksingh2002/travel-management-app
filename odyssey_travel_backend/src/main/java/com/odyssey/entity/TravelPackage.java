@@ -22,12 +22,13 @@ public class TravelPackage {
     private String description;
     private String destination;
     private double price;
+    private Integer duration;
 
     @Enumerated(EnumType.STRING)
     private  Status status;
     
     @Lob
-    @Column(columnDefinition = "LONGBLOB")
+    //@Column(columnDefinition = "LONGBLOB")
     private byte[] image;
 
     @ManyToOne()
