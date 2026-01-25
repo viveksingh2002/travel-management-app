@@ -37,30 +37,22 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 	}
 
 	@Override
-	public void savePackage(TravelPackageDto dto,MultipartFile image) {
-		// TODO Auto-generated method stub
+	public void savePackage(TravelPackageDto dto) {
 		
 		User agent=new User();
 		agent.setUserId(dto.getAgentId());
-		 if (image == null || image.isEmpty()) {
-	            throw new RuntimeException("Image is required");
-	        }
+        // Image logic removed as per requirement
 
-	        try {
-	            TravelPackage travelPackage = new TravelPackage();
-	            travelPackage.setTitle(dto.getTitle());
-	            travelPackage.setDescription(dto.getDescription());
-	            travelPackage.setPrice(dto.getPrice());
-	            travelPackage.setDestination(dto.getDestination());
-	            travelPackage.setAgent(agent);
-	            travelPackage.setImage(image.getBytes());
-	            travelPackage.setStatus(Status.PENDING); // admin approval later
+        TravelPackage travelPackage = new TravelPackage();
+        travelPackage.setTitle(dto.getTitle());
+        travelPackage.setDescription(dto.getDescription());
+        travelPackage.setPrice(dto.getPrice());
+        travelPackage.setDestination(dto.getDestination());
+        travelPackage.setAgent(agent);
+        // travelPackage.setImage(null); 
+        travelPackage.setStatus(Status.PENDING); // admin approval later
 
-	            travelRepo.save(travelPackage);
-
-	        } catch (IOException e) {
-	            throw new RuntimeException("Failed to save image", e);
-	        }		 
+        travelRepo.save(travelPackage);
 	}
 
 	@Override

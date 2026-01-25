@@ -23,5 +23,5 @@ public interface TravelPackageService {
 
     TravelPackage updatePackageStatus(Long id, Status status);
 
-	void savePackage(TravelPackageDto dto, MultipartFile image);
+	void savePackage(TravelPackageDto dto);
 }

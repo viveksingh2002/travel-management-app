@@ -71,42 +71,44 @@ function AddPackages() {
   const handleSubmit = async (e, action = 'submit') => {
     e.preventDefault();
 
-    const formData = new FormData();
+    // Prepare JSON payload matching TravelPackageDto
+    const payload = {
+      title: packageData.title,
+      description: packageData.description,
+      price: parseFloat(packageData.price),
+      duration: parseInt(packageData.duration) || 7, // Defaulting if not in form
+      destination: packageData.destination,
+      agentId: 1, // Hardcoded as requested
+      // status: action === 'submit' ? 'PENDING' : 'DRAFT' // Backend sets to PENDING for now
+    };
 
-    // Append package data as JSON
-    formData.append(
-      'package',
-      new Blob([JSON.stringify(packageData)], { type: 'application/json' })
-    );
+    console.log(`Submitting as ${action}:`, payload);
 
-    // Append itinerary as array
-    formData.append('itinerary', JSON.stringify(itinerary));
+    try {
+      const response = await fetch('http://localhost:8080/api/packages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
 
-    // Append images
-    images.forEach((file) => {
-      formData.append('images', file);
-    });
-
-    // Optional: add action type (draft vs submit)
-    formData.append('action', action); // 'draft' or 'submit'
-
-    console.log(`Submitting as ${action}:`, {
-      package: packageData,
-      itinerary,
-      images: images.map((f) => f.name),
-    });
-
-    // TODO: Replace with axios/fetch call
-    // try {
-    //   const res = await axios.post('/api/packages', formData, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   });
-    //   console.log('Success:', res.data);
-    // } catch (err) {
-    //   console.error('Error:', err);
-    // }
-
-    alert(`Form submitted as ${action} — check console`);
+      if (response.ok) {
+        const text = await response.text();
+        alert("Success: " + text);
+        // Navigate to dashboard or package list
+        // Assuming window.location or using useNavigate hook if available
+        // Since this is a function component, we should check if useNavigate is used.
+        // It's not imported in the provided snippet. Let's start by just reloading or redirecting window.
+        window.location.href = "/agent/dashboard";
+      } else {
+        const errorText = await response.text();
+        alert("Error: " + errorText);
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      alert("Network Error: Could not connect to server. Ensure backend is running.");
+    }
   };
 
   return (
@@ -347,7 +349,7 @@ function AddPackages() {
           <button
             type="button"
             className="px-8 py-3.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all duration-150"
-            onClick={() => handleSubmit({ preventDefault: () => {} }, 'cancel')}
+            onClick={() => handleSubmit({ preventDefault: () => { } }, 'cancel')}
           >
             Cancel
           </button>

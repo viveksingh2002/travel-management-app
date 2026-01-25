@@ -22,32 +22,25 @@ import com.odyssey.service.TravelPackageService;
 
 @RestController
 @RequestMapping("/api/packages")
-@CrossOrigin
+@CrossOrigin(origins = "*") // Fail-safe for CORS
 public class TravelPackageController {
 
 	@Autowired
 	private TravelPackageService travelService;
 	
 	private final ObjectMapper objectmapper=new ObjectMapper();
-	@PostMapping( consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<String> createPackage(@RequestPart("data") String travelPackage, @RequestPart("image") MultipartFile image)
+	@PostMapping
+	public ResponseEntity<String> createPackage(@RequestBody TravelPackageDto travelPackage)
 	{
-		System.out.println("DATA = " + travelPackage);
-	    System.out.println("FILE = " + image.getOriginalFilename());
-	    TravelPackageDto travelpackage;
 		try {
-			travelpackage = objectmapper.readValue(travelPackage,TravelPackageDto.class);
-			travelService.savePackage(travelpackage,image);
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
+			// Assuming agentId is passed in JSON. If not, we might need to set a default or extract from context.
+            // For now, trusting frontend sends it.
+			travelService.savePackage(travelPackage);
+            return ResponseEntity.ok("Package submitted for admin approval");
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+            return ResponseEntity.badRequest().body("Error creating package: " + e.getMessage());
 		}
-		
-		return ResponseEntity.ok("Package submitted for admin approval");
-		
 	}
 	
 	
