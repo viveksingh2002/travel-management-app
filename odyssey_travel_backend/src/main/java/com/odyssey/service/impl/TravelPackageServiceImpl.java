@@ -36,21 +36,24 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 	public void savePackage(TravelPackageDto dto, MultipartFile image) {
 		// TODO Auto-generated method stub
 
-		User agent = new User();
-		agent.setUserId(dto.getAgentId());
-		if (image == null || image.isEmpty()) {
-			throw new RuntimeException("Image is required");
-		}
+		User agent = userRepo.findById(dto.getAgentId())
+				.orElseGet(() -> userRepo.findAll().stream().findFirst()
+						.orElseThrow(() -> new RuntimeException("No users found in database. Please register a user/agent first.")));
+		 if (image == null || image.isEmpty()) {
+	            throw new RuntimeException("Image is required");
+	        }
 
-		try {
-			TravelPackage travelPackage = new TravelPackage();
-			travelPackage.setTitle(dto.getTitle());
-			travelPackage.setDescription(dto.getDescription());
-			travelPackage.setPrice(dto.getPrice());
-			travelPackage.setDestination(dto.getDestination());
-			travelPackage.setAgent(agent);
-			travelPackage.setImage(image.getBytes());
-			travelPackage.setStatus(Status.PENDING); // admin approval
+	        try {
+	            TravelPackage travelPackage = new TravelPackage();
+	            travelPackage.setTitle(dto.getTitle());
+	            travelPackage.setDescription(dto.getDescription());
+	            travelPackage.setPrice(dto.getPrice());
+            travelPackage.setDuration(dto.getDuration());
+	            travelPackage.setDestination(dto.getDestination());
+	            travelPackage.setAgent(agent);
+	            travelPackage.setImage(image.getBytes());
+	            travelPackage.setStatus(Status.PENDING); // admin approval later
+
 
 			travelRepo.save(travelPackage);
 

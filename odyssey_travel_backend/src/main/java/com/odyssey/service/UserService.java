@@ -7,10 +7,16 @@ import com.odyssey.entity.User;
 
 public interface UserService {
 
-	List<User> getAllUsers();
+    List<User> getAllUsers();
+
+    User createUser(User user);
+
+    User getUserById(Long userId);
+
+    User deactivateUser(Long userId);
 
 	List<User> getUsersByRole(Role role);
 
-	void updateUserStatus(Long userId, boolean active);
+	User updateUserStatus(Long userId, boolean active);
 
 }

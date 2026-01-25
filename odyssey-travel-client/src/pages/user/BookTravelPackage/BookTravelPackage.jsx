@@ -37,7 +37,7 @@ export default function BookingPage() {
         {/* 1. Primary Traveler Details */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
           <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-6 border-b pb-2">
-            Primary Traveler Details
+            Contact Details
           </h2>
 
           <div className="space-y-4">
@@ -91,7 +91,7 @@ export default function BookingPage() {
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
           <div className="flex justify-between items-center mb-6 border-b pb-2">
             <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400">
-              Family Members
+              Travelers
             </h2>
             <button
               onClick={addMember}

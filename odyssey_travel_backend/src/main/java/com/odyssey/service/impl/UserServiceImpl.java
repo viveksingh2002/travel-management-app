@@ -4,34 +4,52 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 
 import com.odyssey.entity.User;
 import com.odyssey.repository.UserRepository;
 import com.odyssey.service.UserService;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepository userRepo;
+    @Autowired
+    private final UserRepository userRepository;
 
-	@Override
-	public List<User> getAllUsers() {
-		return userRepo.findAll();
-	}
+    @Override
+    public List<User> getUsersByRole(com.odyssey.entity.Role role) {
+        return userRepository.findByRole(role);
+    }
 
-	@Override
-	public List<User> getUsersByRole(com.odyssey.entity.Role role) {
-		return userRepo.findByRole(role);
-	}
+    @Override
+    public User updateUserStatus(Long userId, boolean active) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActive(active);
+        return userRepository.save(user);
+    }
 
-	@Override
-	public void updateUserStatus(Long userId, boolean active) {
-		User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-		user.setActive(active);
-		userRepo.save(user);
-	}
+    @Override
+    public User createUser(User user) {
+        user.setActive(true);
+        return userRepository.save(user);
+    }
 
+    @Override
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User deactivateUser(Long userId) {
+        User user = getUserById(userId);
+        user.setActive(false);
+        return userRepository.save(user);
+    }
 }

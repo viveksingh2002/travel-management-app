@@ -12,8 +12,16 @@ export default function useUserManagement() {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(API_URL);
-            setUsers(response.data);
+            // Fetch only CLIENT role users
+            const response = await axios.get(`${API_URL}/role/CLIENT`);
+            // Map backend data to frontend format
+            const mappedUsers = response.data.map(user => ({
+                id: user.userId,
+                name: user.name,
+                email: user.email,
+                blocked: !user.active // if active is true, blocked is false
+            }));
+            setUsers(mappedUsers);
         } catch (error) {
             alert("Error: Could not get users.");
         }
@@ -31,7 +39,8 @@ export default function useUserManagement() {
             await axios.put(`${API_URL}/${id}/block?blocked=${!currentBlockedStatus}`);
             fetchUsers(); // Refresh the list after update
         } catch (error) {
-            alert("Error: Could not update user status.");
+            console.error("Block/Unblock error:", error);
+            alert(`Error: Could not update user status. ${error.response?.data?.message || error.message}`);
         }
     };
 

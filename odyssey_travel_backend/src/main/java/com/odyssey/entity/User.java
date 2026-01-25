@@ -9,6 +9,8 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -36,9 +38,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    private boolean active; // approved or blocked
+    private boolean active = true; // approved or blocked
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @com.fasterxml.jackson.annotation.JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Booking> bookings;
 }

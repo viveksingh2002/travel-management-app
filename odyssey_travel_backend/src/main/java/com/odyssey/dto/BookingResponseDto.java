@@ -19,6 +19,7 @@ public class BookingResponseDto {
     private String packageTitle;
     private LocalDateTime bookingDate;
     private LocalDate travelDate;
+    private int travelers;
     private BookingStatus status;
     private Double totalAmount;
     private String paymentMethod;

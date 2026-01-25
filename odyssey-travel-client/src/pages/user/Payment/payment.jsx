@@ -1,20 +1,50 @@
-PaymentPage
 import React, { useState } from "react";
+import usePayment from "./usePayment";
 
 function Payment() {
-  const [summary] = useState({
-    packageName: "Grand Manali Tour",
-    bookingId: "Manali2025GHTR",
-    travelDates: "2025-09-15 to 2025-09-29",
-    travelers: "2 Adults, 1 Child",
-    baseFare: 3500,
-    serviceFee: 150,
-    taxes: 200,
-    discount: 175,
-    total: 3675,
+  // Use the custom hook that connects to backend
+  const { totalAmount, handlePayNow, paymentMethod, setPaymentMethod } = usePayment();
+
+  const [summary, setSummary] = useState({
+    packageName: "Loading...",
+    bookingId: "...",
+    travelDates: "Date TBD",
+    travelers: "...",
+    baseFare: 0,
+    serviceFee: 0,
+    taxes: 0,
+    discount: 0,
+    total: 0,
   });
 
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  React.useEffect(() => {
+    // Load data passed from Booking Page
+    const title = sessionStorage.getItem("packageTitle") || "Travel Package";
+    const priceDetailsStr = sessionStorage.getItem("priceDetails");
+    const familyMembersStr = sessionStorage.getItem("familyMembers");
+
+
+    // Default dates - in a real app these would be selected dates
+    const dateStr = new Date().toISOString().split('T')[0];
+
+    if (priceDetailsStr) {
+      const prices = JSON.parse(priceDetailsStr);
+      const members = familyMembersStr ? JSON.parse(familyMembersStr) : [];
+      const memberCount = members.length;
+
+      setSummary({
+        packageName: title,
+        travelDates: `${dateStr} (Flexible)`,
+        travelers: `${memberCount} Traveler${memberCount !== 1 ? 's' : ''}`,
+        baseFare: prices.basePrice,
+        serviceFee: 100,
+        taxes: 50,
+        discount: prices.discounts,
+        total: prices.finalAmount,
+      });
+    }
+  }, []);
+
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -22,23 +52,15 @@ function Payment() {
   const [saveCard, setSaveCard] = useState(false);
 
   const formatAmount = (amount) =>
-    `₹${amount.toLocaleString("en-IN", {
+    `₹${(amount || 0).toLocaleString("en-IN", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Payment attempt:", {
-      method: paymentMethod,
-      cardNumber: cardNumber.replace(/\s/g, ""),
-      cardHolder,
-      expiry,
-      cvv,
-      saveCard,
-      amount: summary.total,
-    });
-    alert("Payment form submitted — check console (real gateway next)");
+    // Call the backend integration function from usePayment hook
+    handlePayNow();
   };
 
   return (
@@ -64,10 +86,6 @@ function Payment() {
                   <span className="text-gray-600 dark:text-gray-400 font-medium">Package Name</span>
                   <span className="font-medium text-gray-900 dark:text-gray-100">{summary.packageName}</span>
                 </div>
-                <div className="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-400 font-medium">Booking ID</span>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{summary.bookingId}</span>
-                </div>
 
                 {/* Travel Dates */}
                 <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700">
@@ -78,7 +96,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit dates page...")} 
+                    onClick={() => alert("Redirecting to edit dates page...")}
                   >
                     Edit Dates
                   </button>
@@ -93,7 +111,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit guests page...")} 
+                    onClick={() => alert("Redirecting to edit guests page...")}
                   >
                     Edit Guests
                   </button>
@@ -145,17 +163,16 @@ function Payment() {
                       key={method}
                       type="button"
                       onClick={() => setPaymentMethod(method)}
-                      className={`py-3.5 px-4 rounded-xl font-medium text-sm transition-all duration-150 border ${
-                        paymentMethod === method
-                          ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white border-transparent shadow-md"
-                          : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-400 dark:hover:border-green-500 hover:shadow-sm"
-                      }`}
+                      className={`py-3.5 px-4 rounded-xl font-medium text-sm transition-all duration-150 border ${paymentMethod === method
+                        ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white border-transparent shadow-md"
+                        : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-400 dark:hover:border-green-500 hover:shadow-sm"
+                        }`}
                     >
                       {method === "card"
                         ? "Credit/Debit Card"
                         : method === "netbanking"
-                        ? "Net Banking"
-                        : "UPI"}
+                          ? "Net Banking"
+                          : "UPI"}
                     </button>
                   ))}
                 </div>

@@ -4,7 +4,8 @@ import Navbar from "../../../components/Navbar/Navbar";
 import Destination from "../../../components/Destinations/Destination";
 import Itinerary from "../../../components/Itineraries/Itinerary";
 import Footer from "../../../components/Footer/Footer";
-import Packages from "../Packages/Packages";
+import PakageSection from "../Packages/PackageSection";
+import ServicesSection from "../../../components/ServicesSection/ServicesSection"
 // import Login from "../../auth/Login/Login";
 
 function LandingPage() {
@@ -15,9 +16,11 @@ function LandingPage() {
 
       <Destination />
 
-      <Packages />
+      <PakageSection />
 
       <Itinerary />
+
+      <ServicesSection />
 
       <Footer />
     </>

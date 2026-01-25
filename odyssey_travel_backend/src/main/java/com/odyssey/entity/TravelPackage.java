@@ -22,15 +22,17 @@ public class TravelPackage {
     private String description;
     private String destination;
     private double price;
-    private int duration;
+
+
+    private Integer duration;
+
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
-    @com.fasterxml.jackson.annotation.JsonIgnore
-    private byte[] image;
+        private byte[] image;
 
     @ManyToOne()
     @JoinColumn(name = "agent_id", nullable = false)

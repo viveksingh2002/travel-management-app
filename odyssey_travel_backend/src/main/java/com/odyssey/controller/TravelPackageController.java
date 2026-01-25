@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odyssey.dto.TravelPackageDto;
 import com.odyssey.entity.Status;
@@ -40,17 +37,14 @@ public class TravelPackageController {
 		System.out.println("FILE = " + image.getOriginalFilename());
 		TravelPackageDto travelpackage;
 		try {
-			travelpackage = objectmapper.readValue(travelPackage, TravelPackageDto.class);
-			travelService.savePackage(travelpackage, image);
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			travelpackage = objectmapper.readValue(travelPackage,TravelPackageDto.class);
+			travelService.savePackage(travelpackage,image);
+			return ResponseEntity.ok("Package submitted for admin approval");
+		} catch (Exception e) {
 
-		return ResponseEntity.ok("Package submitted for admin approval");
+			e.printStackTrace();
+			return ResponseEntity.status(500).body("Error: " + e.getMessage());
+		}
 
 	}
 

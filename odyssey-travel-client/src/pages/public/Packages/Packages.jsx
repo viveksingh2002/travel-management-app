@@ -1,100 +1,152 @@
-import React, { useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import React from "react";
+import PackageCard from "../../../components/PackageCard/PackageCard";
+import Navbar from "../../../components/Navbar/Navbar";
 
-const dummyPackages = [
+const tourPackages = [
   {
-    name: "Goa",
-    price: "₹8,000",
-    img: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
+    title: "Goa Beach Retreat",
+    price: "₹12,000 / person",
+    desc: "Experience pristine beaches, water sports, and vibrant nightlife.",
+    img: "/images/tours/goa.jpg",
   },
   {
-    name: "Kerala",
-    price: "₹11,999",
-    img: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca",
+    title: "Himalayan Trek Adventure",
+    price: "₹25,000 / person",
+    desc: "Conquer breathtaking peaks and explore serene monasteries.",
+    img: "/images/tours/himalaya.jpg",
   },
   {
-    name: "Andaman",
-    price: "₹14,999",
-    img: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
+    title: "Kerala Backwater Escape",
+    price: "₹18,000 / person",
+    desc: "Cruise through Kerala's serene backwaters and green landscapes.",
+    img: "/images/tours/kerala.jpg",
   },
   {
-    name: "Gujarat",
-    price: "₹9,999",
-    img: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b",
+    title: "Odisha Spiritual Journey",
+    price: "₹15,000 / person",
+    desc: "A divine coastal getaway with iconic temple experiences.",
+    img: "/images/tours/odisha.jpg",
+  },
+  {
+    title: "Rajasthan Cultural Immersion",
+    price: "₹20,000 / person",
+    desc: "Explore royal palaces, deserts, camel rides & heritage sites.",
+    img: "/images/tours/rajasthan.jpg",
+  },
+  {
+    title: "Northeast Nature Escape",
+    price: "₹30,000 / person",
+    desc: "Discover untouched forests, waterfalls & tribal cultures.",
+    img: "/images/tours/northeast.jpg",
+  },
+  {
+    title: "Kashmir Paradise Experience",
+    price: "₹22,000 / person",
+    desc: "Snow peaks, shikara rides & heavenly landscapes await you.",
+    img: "/images/tours/kashmir.jpg",
+  },
+  {
+    title: "Leh–Ladakh Adventure Drive",
+    price: "₹35,000 / person",
+    desc: "Ride through rugged mountains, lakes & the world's highest passes.",
+    img: "/images/tours/ladakh.jpg",
+  },
+  {
+    title: "Andaman Island Escape",
+    price: "₹28,000 / person",
+    desc: "Snorkeling, beaches, coral reefs & tropical paradise bliss.",
+    img: "/images/tours/andaman.jpg",
+  },
+  {
+    title: "Meghalaya Rainforest Trails",
+    price: "₹27,000 / person",
+    desc: "Witness living root bridges, caves & scenic waterfalls.",
+    img: "/images/tours/meghalaya.jpg",
+  },
+  {
+    title: "Sikkim Mountain Discovery",
+    price: "₹24,000 / person",
+    desc: "Explore monasteries, lakes & snow-laden mountains.",
+    img: "/images/tours/sikkim.jpg",
+  },
+  {
+    title: "Varanasi Spiritual Tour",
+    price: "₹12,999 / person",
+    desc: "Experience holy ghats, Ganga Aarti & cultural richness.",
+    img: "/images/tours/varanasi.jpg",
+  },
+  {
+    title: "Tamil Nadu Heritage Circuit",
+    price: "₹16,500 / person",
+    desc: "Visit ancient temples, heritage towns & cultural sites.",
+    img: "/images/tours/tamilnadu.jpg",
+  },
+  {
+    title: "Maharashtra Konkan Trail",
+    price: "₹14,000 / person",
+    desc: "Beaches, seafood, forts & lush coastal beauty.",
+    img: "/images/tours/konkan.jpg",
+  },
+  {
+    title: "Golden Triangle Tour",
+    price: "₹19,500 / person",
+    desc: "Delhi, Agra & Jaipur—India’s most iconic travel circuit.",
+    img: "/images/tours/golden-triangle.jpg",
+  },
+  {
+    title: "Mysore & Coorg Retreat",
+    price: "₹18,500 / person",
+    desc: "Coffee estates, royal palaces & misty hills.",
+    img: "/images/tours/coorg.jpg",
+  },
+  {
+    title: "Hyderabad Heritage Walk",
+    price: "₹10,500 / person",
+    desc: "Charminar, Golconda Fort & delicious Hyderabadi cuisine.",
+    img: "/images/tours/hyderabad.jpg",
+  },
+  {
+    title: "Pondicherry French Escape",
+    price: "₹13,000 / person",
+    desc: "French-style streets, beaches & calm seaside cafés.",
+    img: "/images/tours/pondy.jpg",
+  },
+  {
+    title: "Uttarakhand Nature Retreat",
+    price: "₹21,000 / person",
+    desc: "Hill stations, rivers, treks & wildlife sanctuaries.",
+    img: "/images/tours/uttarakhand.jpg",
+  },
+  {
+    title: "Gir Forest Wildlife Safari",
+    price: "₹23,000 / person",
+    desc: "Explore India's lion reserve with guided safaris.",
+    img: "/images/tours/gir.jpg",
   },
 ];
 
-function Packages() {
-  const slider = useRef();
-
-  const scrollLeft = () => slider.current.scrollBy({ left: -300, behavior: "smooth" });
-  const scrollRight = () => slider.current.scrollBy({ left: 300, behavior: "smooth" });
-
+function TourPackages() {
   return (
-    <div className="px-6 md:px-16 py-16">
-      {/* Heading */}
-      <div className="text-center mb-10">
-        <h2 className="text-[80px] font-extrabold ">Holiday Packages</h2>
-        <p className="text-gray-600 text-3xl">Indulge in unforgettable adventure with special tour plans.</p>
-      </div>
+    <>
+      <Navbar />
+      <div className="px-6 md:px-20 py-16 bg-gray-50 dark:bg-gray-900 min-h-screen mt-[80px]">
+        {/* Title */}
+        <h2 className="text-4xl font-bold text-center text-gray-900 dark:text-white mb-2">
+          Featured Tour Packages
+        </h2>
+        <p className="text-center text-gray-600 dark:text-gray-300 mb-12">
+          Explore our best curated travel experiences across India & beyond.
+        </p>
 
-
-      {/* Slider container */}
-      <div className="relative">
-        {/* Left Button */}
-        <button
-          onClick={scrollLeft}
-          className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-md p-3 rounded-full z-10"
-        >
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
-
-        {/* Cards */}
-        <div
-          ref={slider}
-          className="flex gap-6 overflow-x-auto scroll-smooth no-scrollbar pb-4"
-        >
-          {dummyPackages.map((pkg, i) => (
-            <div
-              key={i}
-              className="min-w-[280px] bg-white rounded-2xl shadow hover:shadow-lg transition overflow-hidden"
-            >
-              <img
-                src={pkg.img}
-                className="h-48 w-full object-cover"
-                alt={pkg.name}
-              />
-              <div className="p-4">
-                <h3 className="text-lg font-semibold">{pkg.name}</h3>
-                <p className="text-gray-600 mt-1">From <span className="font-bold">{pkg.price}</span></p>
-                <button className="text-blue-600 mt-3 font-semibold flex items-center gap-1">
-                  Explore <FontAwesomeIcon icon={faArrowRight} />
-                </button>
-              </div>
-            </div>
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10">
+          {tourPackages.map((pkg, index) => (
+            <PackageCard key={index} title={pkg.title} price={pkg.price} desc={pkg.desc} img={pkg.img} />
           ))}
         </div>
-
-        {/* Right Button */}
-        <button
-          onClick={scrollRight}
-          className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-md p-3 rounded-full z-10"
-        >
-          <FontAwesomeIcon icon={faArrowRight} />
-        </button>
       </div>
-
-      {/* Show All Button */}
-      <div className="text-center mt-10">
-        <button className="px-8 py-3 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700">
-          Show All Packages
-        </button>
-      </div>
-    </div>
+    </>
   );
 }
 
-
-
-export default Packages
+export default TourPackages;
