@@ -80,7 +80,6 @@ const itineraries = [
 function Itinerary() {
   const sliderRef = useRef(null);
 
-  // Auto infinite slide
   useEffect(() => {
     const interval = setInterval(() => {
       const slider = sliderRef.current;
@@ -121,16 +120,16 @@ function Itinerary() {
       <div className="relative max-w-7xl mx-auto">
         <div
           ref={sliderRef}
-          className="flex overflow-x-auto gap-14 px-12 scrollbar-none scroll-smooth "
+          className="flex overflow-x-auto gap-14 px-12 pt-10 scrollbar-none scroll-smooth "
         >
           {itineraries.map((item) => (
             <div
               key={item.city}
-              className="w-[300px] flex-shrink-0 text-center p-4 rounded-xl transition-all duration-300 hover:-translate-y-2 hover:bg-gray-100"
+              className="w-[300px] flex-shrink-0 text-center p-4 rounded-xl transition-all duration-300 hover:-translate-y-[50px]"
             >
               <img
                 src={item.img}
-                className="w-[280px] h-[330px] object-cover rounded-[20%]"
+                className="w-[280px] h-[330px] object-cover rounded-[10%]"
                 alt={item.city}
               />
 
