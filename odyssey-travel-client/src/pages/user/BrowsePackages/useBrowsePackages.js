@@ -9,13 +9,10 @@ export default function useBrowsePackages() {
     const fetchPackages = async () => {
         setLoading(true);
         try {
-           
             const response = await axios.get("http://localhost:8080/api/packages");
-
-            // array of objects with: package_id, title, description, price
             setPackages(response.data);
         } catch (error) {
-            console.error("Backend error:", error);
+            console.error("Error fetching packages:", error);
         }
         setLoading(false);
     };

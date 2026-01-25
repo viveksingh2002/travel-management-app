@@ -34,12 +34,11 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role; 
+    private Role role;
 
     private boolean active; // approved or blocked
-    
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private List<Booking> bookings;
 }
-
-
