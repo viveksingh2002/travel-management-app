@@ -1,7 +1,6 @@
 package com.odyssey.service.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,79 +17,73 @@ import com.odyssey.repository.TravelPackageRepository;
 import com.odyssey.repository.UserRepository;
 import com.odyssey.service.TravelPackageService;
 
-
-
 @Service
 @Transactional
 public class TravelPackageServiceImpl implements TravelPackageService {
 
 	@Autowired
 	private TravelPackageRepository travelRepo;
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Override
-	public TravelPackage findPackageById(Long id)
-	{
-		return travelRepo.findById(id).orElseThrow(()->new RuntimeException("Package not found"));
+	public TravelPackage findPackageById(Long id) {
+		return travelRepo.findById(id).orElseThrow(() -> new RuntimeException("Package not found"));
 	}
 
 	@Override
-	public void savePackage(TravelPackageDto dto,MultipartFile image) {
+	public void savePackage(TravelPackageDto dto, MultipartFile image) {
 		// TODO Auto-generated method stub
-		
-		User agent=new User();
+
+		User agent = new User();
 		agent.setUserId(dto.getAgentId());
-		 if (image == null || image.isEmpty()) {
-	            throw new RuntimeException("Image is required");
-	        }
+		if (image == null || image.isEmpty()) {
+			throw new RuntimeException("Image is required");
+		}
 
-	        try {
-	            TravelPackage travelPackage = new TravelPackage();
-	            travelPackage.setTitle(dto.getTitle());
-	            travelPackage.setDescription(dto.getDescription());
-	            travelPackage.setPrice(dto.getPrice());
-	            travelPackage.setDestination(dto.getDestination());
-	            travelPackage.setAgent(agent);
-	            travelPackage.setImage(image.getBytes());
-	            travelPackage.setStatus(Status.PENDING); // admin approval later
+		try {
+			TravelPackage travelPackage = new TravelPackage();
+			travelPackage.setTitle(dto.getTitle());
+			travelPackage.setDescription(dto.getDescription());
+			travelPackage.setPrice(dto.getPrice());
+			travelPackage.setDestination(dto.getDestination());
+			travelPackage.setAgent(agent);
+			travelPackage.setImage(image.getBytes());
+			travelPackage.setStatus(Status.PENDING); // admin approval
 
-	            travelRepo.save(travelPackage);
+			travelRepo.save(travelPackage);
 
-	        } catch (IOException e) {
-	            throw new RuntimeException("Failed to save image", e);
-	        }		 
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to save image", e);
+		}
 	}
 
 	@Override
 	public List<TravelPackage> getAllPackages() {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 		return travelRepo.findAll();
 	}
 
 	@Override
-	public List<TravelPackage> getPackagesByStatus() {
-		// TODO Auto-generated method stub
-		
-		return travelRepo.findByStatus(Status.APPROVED);
+	public List<TravelPackage> getPackagesByStatus(Status status) {
+		return travelRepo.findByStatus(status);
 	}
 
 	@Override
 	public List<TravelPackage> getPackagesByAgentId(Long agentId) {
-		// TODO Auto-generated method stub
 		return travelRepo.findByAgent_UserId(agentId);
 	}
 
 	@Override
 	public Optional<TravelPackage> getPackageById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return travelRepo.findById(id);
 	}
 
 	@Override
-	public TravelPackage updatePackageStatus(Long id, Status status) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updatePackageStatus(Long id, String status) {
+		TravelPackage pkg = travelRepo.findById(id).orElseThrow(() -> new RuntimeException("Package not found"));
+		pkg.setStatus(Status.valueOf(status.toUpperCase()));
+		travelRepo.save(pkg);
 	}
 }

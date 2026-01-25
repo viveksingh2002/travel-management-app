@@ -10,18 +10,18 @@ import com.odyssey.entity.Status;
 import com.odyssey.entity.TravelPackage;
 
 public interface TravelPackageService {
- 
-	TravelPackage findPackageById(Long id);
 
-	List<TravelPackage> getAllPackages();
+    TravelPackage findPackageById(Long id);
 
-    List<TravelPackage> getPackagesByStatus();
+    List<TravelPackage> getAllPackages();
+
+    List<TravelPackage> getPackagesByStatus(Status status);
 
     List<TravelPackage> getPackagesByAgentId(Long agentId);
 
     Optional<TravelPackage> getPackageById(Long id);
 
-    TravelPackage updatePackageStatus(Long id, Status status);
+    void updatePackageStatus(Long id, String status);
 
-	void savePackage(TravelPackageDto dto, MultipartFile image);
+    void savePackage(TravelPackageDto dto, MultipartFile image);
 }

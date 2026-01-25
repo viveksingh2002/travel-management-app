@@ -22,12 +22,14 @@ public class TravelPackage {
     private String description;
     private String destination;
     private double price;
+    private int duration;
 
     @Enumerated(EnumType.STRING)
-    private  Status status;
-    
+    private Status status;
+
     @Lob
     @Column(columnDefinition = "LONGBLOB")
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private byte[] image;
 
     @ManyToOne()
