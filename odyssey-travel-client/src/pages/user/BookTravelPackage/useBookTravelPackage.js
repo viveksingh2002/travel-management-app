@@ -89,8 +89,9 @@ export default function useBookTravelPackage() {
         sessionStorage.setItem("specialRequest", JSON.stringify(specialRequest));
 
         // Also save the package price for the payment page
-        sessionStorage.setItem("packagePrice", pricePerPerson);
+        sessionStorage.setItem("priceDetails", JSON.stringify(priceDetails));
         sessionStorage.setItem("packageTitle", packageData ? packageData.title : "Package");
+        sessionStorage.setItem("packageId", id);
 
         navigate("/user/payment");
     };
