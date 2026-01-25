@@ -36,7 +36,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role; 
 
-    private boolean active; // approved or blocked
+    private boolean active=true; // approved or blocked
     
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;

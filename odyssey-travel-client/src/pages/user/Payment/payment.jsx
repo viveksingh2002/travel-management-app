@@ -1,17 +1,67 @@
 import React, { useState } from "react";
 
 function Payment() {
-  const [summary] = useState({
-    packageName: "Grand Manali Tour",
-    bookingId: "Manali2025GHTR",
-    travelDates: "2025-09-15 to 2025-09-29",
-    travelers: "2 Adults, 1 Child",
-    baseFare: 3500,
-    serviceFee: 150,
-    taxes: 200,
-    discount: 175,
-    total: 3675,
+  const [summary, setSummary] = useState({
+    packageName: "Loading...",
+    bookingId: "...",
+    travelDates: "Date TBD",
+    travelers: "...",
+    baseFare: 0,
+    serviceFee: 0,
+    taxes: 0,
+    discount: 0,
+    total: 0,
   });
+
+  React.useEffect(() => {
+    // Load data passed from Booking Page
+    const title = sessionStorage.getItem("packageTitle") || "Travel Package";
+    const priceDetailsStr = sessionStorage.getItem("priceDetails");
+    const familyMembersStr = sessionStorage.getItem("familyMembers");
+
+    // Generate a pseudo Booking ID for valid display
+    const pseudoId = "BKG-" + Math.floor(100000 + Math.random() * 900000);
+
+    // Default dates - in a real app these would be selected dates
+    const dateStr = new Date().toISOString().split('T')[0];
+
+    if (priceDetailsStr) {
+      const prices = JSON.parse(priceDetailsStr);
+      const members = familyMembersStr ? JSON.parse(familyMembersStr) : [];
+      const memberCount = members.length;
+
+      setSummary({
+        packageName: title,
+        bookingId: pseudoId,
+        travelDates: `${dateStr} (Flexible)`,
+        travelers: `${memberCount} Traveler${memberCount !== 1 ? 's' : ''}`,
+        baseFare: prices.basePrice,
+        serviceFee: prices.taxesFees, // Mapping taxes & fees to service fee for display split, or just use one
+        taxes: 0, // already included in taxesFees above usually, or split if needed. 
+        // Let's rely on what we have: basePrice, taxesFees, discounts, finalAmount
+        discount: prices.discounts,
+        total: prices.finalAmount,
+        // Detailed split adjustment for this specific UI template if needed:
+        // The UI shows Base, Service, Taxes, Discount.
+        // Our 'priceDetails' has base, taxesFees, discounts.
+        // We can map taxesFees -> Taxes and set ServiceFee to 0 or split it.
+        // Let's set Taxes = priceDetails.taxesFees
+      });
+
+      // Re-adjusting to match exact fields from priceDetails
+      setSummary({
+        packageName: title,
+        bookingId: pseudoId,
+        travelDates: `${dateStr} (Flexible)`,
+        travelers: `${memberCount} Traveler${memberCount !== 1 ? 's' : ''}`,
+        baseFare: prices.basePrice,
+        serviceFee: 0,
+        taxes: prices.taxesFees,
+        discount: prices.discounts,
+        total: prices.finalAmount,
+      });
+    }
+  }, []);
 
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
@@ -77,7 +127,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit dates page...")} 
+                    onClick={() => alert("Redirecting to edit dates page...")}
                   >
                     Edit Dates
                   </button>
@@ -92,7 +142,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit guests page...")} 
+                    onClick={() => alert("Redirecting to edit guests page...")}
                   >
                     Edit Guests
                   </button>
@@ -144,17 +194,16 @@ function Payment() {
                       key={method}
                       type="button"
                       onClick={() => setPaymentMethod(method)}
-                      className={`py-3.5 px-4 rounded-xl font-medium text-sm transition-all duration-150 border ${
-                        paymentMethod === method
-                          ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white border-transparent shadow-md"
-                          : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-400 dark:hover:border-green-500 hover:shadow-sm"
-                      }`}
+                      className={`py-3.5 px-4 rounded-xl font-medium text-sm transition-all duration-150 border ${paymentMethod === method
+                        ? "bg-gradient-to-r from-green-600 to-emerald-600 text-white border-transparent shadow-md"
+                        : "border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-green-400 dark:hover:border-green-500 hover:shadow-sm"
+                        }`}
                     >
                       {method === "card"
                         ? "Credit/Debit Card"
                         : method === "netbanking"
-                        ? "Net Banking"
-                        : "UPI"}
+                          ? "Net Banking"
+                          : "UPI"}
                     </button>
                   ))}
                 </div>
