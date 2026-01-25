@@ -18,13 +18,13 @@ export default function BookingPage() {
     handleProceed
   } = useBookTravelPackage();
 
-  // if (loading) {
-  //   return (
-  //     <div className="bg-white dark:bg-gray-700 min-h-screen flex items-center justify-center">
-  //       <p className="text-xl font-bold text-blue-500 animate-pulse">Loading package info...</p>
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-gray-700 min-h-screen flex items-center justify-center">
+        <p className="text-xl font-bold text-blue-500 animate-pulse">Loading package info...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white dark:bg-gray-700 min-h-screen py-10 transition-colors duration-300">
@@ -73,6 +73,16 @@ export default function BookingPage() {
                   onChange={(e) => updatePrimaryDetail("mobile", e.target.value)}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Travel Date</label>
+              <input
+                type="date"
+                className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                value={primaryTraveler.travelDate} // Note: This will be handled by our new state
+                onChange={(e) => updatePrimaryDetail("travelDate", e.target.value)}
+              />
             </div>
           </div>
         </div>
