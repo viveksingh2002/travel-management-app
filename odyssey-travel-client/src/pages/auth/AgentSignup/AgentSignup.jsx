@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthModal } from "../../../context/AuthModalContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 import signupImg from "../../../assets/images/login-bg.jpg";
 
 export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const { openLogin } = useAuthModal();
+
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -18,6 +22,13 @@ export default function Signup() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const goToLogin = () => {
+    navigate("/");     // Move to landing
+    setTimeout(() => {
+      openLogin();     // Open login modal
+    }, 100);
   };
 
   return (
@@ -118,7 +129,7 @@ export default function Signup() {
 
             {/* Signup Button – smaller width */}
             <div className="flex justify-center">
-              <button className="bg-red-600 text-white px-12 py-3 rounded-full text-xl font-semibold hover:bg-red-700 transition">
+              <button className="bg-red-600 text-white px-12 py-3 rounded-full text-xl font-semibold hover:bg-red-700 transition" onClick={goToLogin}>
                 Sign Up
               </button>
             </div>
@@ -128,12 +139,15 @@ export default function Signup() {
           {/* Already Have Account */}
           <p className="text-center mt-5 text-gray-500">
             Already have an account?{" "}
-            <a href="/login" className="text-red-600 hover:underline">
+            <button
+              type="button"
+              onClick={goToLogin}
+              className="text-red-600 font-medium hover:underline ml-1"
+            >
               Login
-            </a>
+            </button>
           </p>
         </div>
-
       </div>
     </div>
   );

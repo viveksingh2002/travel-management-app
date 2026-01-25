@@ -1,19 +1,20 @@
-import LDButton from '../../LightDarkButton/LightDarkButton';
+import LightDarkButton from "../../../components/LightDarkButton/LightDarkButton";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-// import { Link, Navigate } from "react-router-dom";
+import { useAuthModal } from "../../../context/AuthModalContext";
 
 import avtar from '../../../assets/images/avtars/platipus.jpg'
 
 function Navbar() {
-  const [open, setOpen] = useState(false);
 
+  const [open, setOpen] = useState(false);
+  const { openLogin } = useAuthModal();
 
   const navLinks = [
-    { name: "Home", href: "#home", active: true },
-    { name: "Packages", href: "#packages", active: false },
-    { name: "Services", href: "#services", active: false },
+    { name: "Home", href: "/" },
+    { name: "Packages", href: "/packages" },
+    { name: "AboutUs", href: "/aboutus" },
   ];
 
   return (
@@ -48,23 +49,15 @@ function Navbar() {
           ))}
         </div>
 
-        {/* RIGHT - TOGGLE + THEME BUTTON + LOGIN */}
         <div className="flex items-center gap-4">
-          {/* Mobile Toggle (Always Visible) */}
           <button
             className="sm:hidden text-gray-700 dark:text-white text-xl"
             onClick={() => setOpen(!open)}
           >
             <FontAwesomeIcon icon={faBars} />
           </button>
-
-
           <img className="w-10 h-10 p-1 rounded-full ring-2 ring-default" src={avtar} alt="Bordered avatar" />
-
-
-          <LDButton />
-
-
+          <LightDarkButton />
         </div>
       </nav>
 
