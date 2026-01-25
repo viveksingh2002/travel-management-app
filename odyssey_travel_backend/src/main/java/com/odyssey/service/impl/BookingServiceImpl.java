@@ -86,6 +86,8 @@ public class BookingServiceImpl implements BookingService {
 		payment.setPaymentStatus("PAID");
 		payment.setBooking(booking);
 
+		booking.setPayment(payment); // Set bidirectional relationship
+
 		paymentRepository.save(payment);
 	}
 

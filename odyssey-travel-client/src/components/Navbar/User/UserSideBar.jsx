@@ -18,9 +18,8 @@ function UserSideBar() {
     // Sidebar menu items
     const menuItems = [
         { name: "Dashboard", path: "/user/dashboard", icon: faGauge },
-        { name: "My Bookings", path: "/user/my-bookings", icon: faPlusCircle },
         { name: "Browse Packages", path: "/user/browse-packages", icon: faBoxOpen },
-        { name: "Book packages", path: "/user/book-package", icon: faBook },
+        { name: "My Bookings", path: "/user/my-bookings", icon: faBook },
         { name: "Support Tickets", path: "/user/support", icon: faLifeRing },
     ];
 

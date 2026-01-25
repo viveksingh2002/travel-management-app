@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import usePayment from "./usePayment";
-
+import { useNavigate } from "react-router-dom";
 function Payment() {
   // Use the custom hook that connects to backend
-  const { totalAmount, handlePayNow, paymentMethod, setPaymentMethod } = usePayment();
-
+  const { packageId, totalAmount, handlePayNow, paymentMethod, setPaymentMethod } = usePayment();
+  const navigate = useNavigate();
+  //use this to set the default values when data is not available
   const [summary, setSummary] = useState({
     packageName: "Loading...",
     bookingId: "...",
@@ -22,10 +23,7 @@ function Payment() {
     const title = sessionStorage.getItem("packageTitle") || "Travel Package";
     const priceDetailsStr = sessionStorage.getItem("priceDetails");
     const familyMembersStr = sessionStorage.getItem("familyMembers");
-
-
-    // Default dates - in a real app these would be selected dates
-    const dateStr = new Date().toISOString().split('T')[0];
+    const dateStr = sessionStorage.getItem("travelDate") || new Date().toISOString().split('T')[0];
 
     if (priceDetailsStr) {
       const prices = JSON.parse(priceDetailsStr);
@@ -40,11 +38,14 @@ function Payment() {
         serviceFee: 100,
         taxes: 50,
         discount: prices.discounts,
-        total: prices.finalAmount,
+        total: totalAmount
       });
     }
   }, []);
 
+  const toBookTravelPage = () => {
+    navigate(`/user/book-package/${packageId}`);
+  };
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -96,7 +97,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit dates page...")}
+                    onClick={() => toBookTravelPage()}
                   >
                     Edit Dates
                   </button>
@@ -111,7 +112,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit guests page...")}
+                    onClick={() => toBookTravelPage()}
                   >
                     Edit Guests
                   </button>

@@ -18,7 +18,7 @@ export default function UserRoutes() {
         <Route path="dashboard" element={<User_DashBoard />} />
         <Route path="browse-packages" element={<BrowsePackages />} />
         <Route path="book-package/:packageId" element={<BookingPage />} />
-        <Route path="payment" element={<Payment />} />
+        <Route path="payment" element={< Payment />} />
         <Route path="my-bookings" element={<UserBookingDetails />} />
         {/* <Route path="login" element={<Login />} /> */}
         <Route path="support" element={<Support />} />
