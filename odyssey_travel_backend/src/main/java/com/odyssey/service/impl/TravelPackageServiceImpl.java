@@ -1,7 +1,6 @@
 package com.odyssey.service.impl;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +39,9 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 	public void savePackage(TravelPackageDto dto,MultipartFile image) {
 		// TODO Auto-generated method stub
 		
-		User agent=new User();
-		agent.setUserId(dto.getAgentId());
+		User agent = userRepo.findById(dto.getAgentId())
+				.orElseGet(() -> userRepo.findAll().stream().findFirst()
+						.orElseThrow(() -> new RuntimeException("No users found in database. Please register a user/agent first.")));
 		 if (image == null || image.isEmpty()) {
 	            throw new RuntimeException("Image is required");
 	        }
@@ -51,6 +51,7 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 	            travelPackage.setTitle(dto.getTitle());
 	            travelPackage.setDescription(dto.getDescription());
 	            travelPackage.setPrice(dto.getPrice());
+            travelPackage.setDuration(dto.getDuration());
 	            travelPackage.setDestination(dto.getDestination());
 	            travelPackage.setAgent(agent);
 	            travelPackage.setImage(image.getBytes());
