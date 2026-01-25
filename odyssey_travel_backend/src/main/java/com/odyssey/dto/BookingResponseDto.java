@@ -1,26 +1,27 @@
 package com.odyssey.dto;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.odyssey.entity.BookingStatus;
+
+import lombok.*;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class BookingRequestDTO {
+@NoArgsConstructor
+public class BookingResponseDto {
 
-    private Long userId;
-    private Long packageId;
+    private Long bookingId;
+    private String packageTitle;
+    private LocalDateTime bookingDate;
     private LocalDate travelDate;
-    private int travelers;
+    private BookingStatus status;
     private Double totalAmount;
-    private PaymentRequestDTO payment;
+    private String paymentMethod;
 
     private String contactFullName;
     private String contactEmail;
