@@ -66,8 +66,8 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 	}
 
 	@Override
-	public List<TravelPackage> getPackagesByStatus(Status status) {
-		return travelRepo.findByStatus(status);
+	public List<TravelPackage> getPackagesByStatusAndAgentActive(Status status) {
+		return travelRepo.findByStatusAndAgent_ActiveTrue(status);
 	}
 
 	@Override
@@ -85,5 +85,11 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 		TravelPackage pkg = travelRepo.findById(id).orElseThrow(() -> new RuntimeException("Package not found"));
 		pkg.setStatus(Status.valueOf(status.toUpperCase()));
 		travelRepo.save(pkg);
+	}
+
+	@Override
+	public List<TravelPackage> getPackagesByStatus(Status status) {
+
+		return travelRepo.findByStatus(status);
 	}
 }

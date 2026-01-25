@@ -1,5 +1,7 @@
 package com.odyssey.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odyssey.dto.TravelPackageDto;
+import com.odyssey.entity.Status;
 import com.odyssey.entity.TravelPackage;
 import com.odyssey.service.TravelPackageService;
 
@@ -58,13 +61,14 @@ public class TravelPackageController {
 	}
 
 	@GetMapping
-	public ResponseEntity<java.util.List<TravelPackage>> getAllApprovedPackages() {
-		return ResponseEntity.ok(travelService.getPackagesByStatus(com.odyssey.entity.Status.APPROVED));
+	public ResponseEntity<List<TravelPackage>> getAllApprovedPackages() {
+		// Only show Approved packages from Active Agents
+		return ResponseEntity.ok(travelService.getPackagesByStatusAndAgentActive(Status.APPROVED));
 	}
 
 	@GetMapping("/admin/pending")
-	public ResponseEntity<java.util.List<TravelPackage>> getPendingPackages() {
-		return ResponseEntity.ok(travelService.getPackagesByStatus(com.odyssey.entity.Status.PENDING));
+	public ResponseEntity<List<TravelPackage>> getPendingPackages() {
+		return ResponseEntity.ok(travelService.getPackagesByStatus(Status.PENDING));
 	}
 
 	@PostMapping("/{id}/status/{status}")
@@ -80,4 +84,5 @@ public class TravelPackageController {
 				.contentType(MediaType.IMAGE_JPEG)
 				.body(pkg.getImage());
 	}
+	
 }
