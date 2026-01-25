@@ -1,9 +1,17 @@
 package com.odyssey.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "travel_packages")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TravelPackage {
 
     @Id
@@ -15,9 +23,14 @@ public class TravelPackage {
     private String destination;
     private double price;
 
-    private String status; // DRAFT, APPROVED, REJECTED
+    @Enumerated(EnumType.STRING)
+    private  Status status;
+    
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] image;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "agent_id", nullable = false)
     private User agent;
 }

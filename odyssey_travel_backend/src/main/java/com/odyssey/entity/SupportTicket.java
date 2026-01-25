@@ -11,7 +11,9 @@ public class SupportTicket {
     private Long ticketId;
 
     private String issue;
-    private String status;
+    
+    @Enumerated(EnumType.STRING)
+    private SupportTicketStatus status;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
