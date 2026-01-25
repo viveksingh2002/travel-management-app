@@ -37,11 +37,11 @@ function Destination() {
   };
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 4000);
+    const timer = setInterval(nextSlide, 4000); 
     return () => clearInterval(timer);
   }, [index]);
   return (
-    <div className="relative w-full h-[650px] overflow-hidden">
+    <div className="relative w-full h-[650px] overflow-hidden mt-[80px]">
       {/* Background Image */}
       <img
         src={slides[index].img}

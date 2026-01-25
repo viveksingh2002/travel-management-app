@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import "./Login.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,26 +10,29 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
+import { useAuthModal } from "../../../context/AuthModalContext";
 
 import sideImg from "../../../assets/images/login-bg.jpg";
 import ToggleRoleButton from "../../../components/ToggleRoleButton/ToggleRoleButton";
 import SocialLogin from "../../../components/SocialLogin/SocialLogin";
 
-export default function Login({ isOpen, setIsOpen }) {
+export default function Login() {
+  const { loginOpen, closeLogin } = useAuthModal();
   const [isMounted, setIsMounted] = useState(false);
   const [role, setRole] = useState("customer");
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const [form, setForm] = useState({ email: "", password: "" });
 
-  // Smooth mount/unmount
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (isOpen) setIsMounted(true);
+    if (loginOpen) setIsMounted(true);
     else {
       const t = setTimeout(() => setIsMounted(false), 300);
       return () => clearTimeout(t);
     }
-  }, [isOpen]);
+  }, [loginOpen]);
 
   if (!isMounted) return null;
 
@@ -36,8 +40,15 @@ export default function Login({ isOpen, setIsOpen }) {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const submitLogin = () => {
-    alert("Login Submitted!");
+    // alert("Login Submitted!");
     console.log(form, role);
+    if (role === "customer") {
+      navigate("/user/dashboard")
+    } else {
+      navigate("/agent/dashboard")
+    }
+    closeLogin()
+
   };
 
   return (
@@ -46,18 +57,18 @@ export default function Login({ isOpen, setIsOpen }) {
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
-        onClick={() => setIsOpen(false)}
+        onClick={closeLogin}
       />
 
-      {/* Modal Box */}
+      {/* Modal */}
       <div
-        className={`relative w-[1100px] h-[650px] bg-white rounded-xl shadow-2xl flex overflow-hidden z-[1000] transition-all duration-300 ${isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
+        className={`relative w-[1100px] h-[650px] bg-white rounded-xl shadow-2xl flex overflow-hidden z-[1000] transition-all duration-300 ${loginOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
           }`}
       >
-        {/* Close */}
+        {/* Close Button */}
         <button
           className="absolute top-6 right-6 text-gray-600 hover:text-black transition"
-          onClick={() => setIsOpen(false)}
+          onClick={closeLogin}
         >
           <FontAwesomeIcon icon={faCircleXmark} size="lg" />
         </button>
@@ -70,12 +81,10 @@ export default function Login({ isOpen, setIsOpen }) {
         {/* Right Login Area */}
         <div className="w-1/2 px-16 py-10 overflow-y-auto">
 
-          {/* Title */}
           <h1 className="text-4xl text-center font-extrabold mb-10">
             Login to your account
           </h1>
 
-          {/* Role Toggle */}
           <ToggleRoleButton role={role} setRole={setRole} />
 
           {/* Email */}
@@ -125,17 +134,25 @@ export default function Login({ isOpen, setIsOpen }) {
 
           {/* Links */}
           <div className="my-5 text-center text-gray-500 text-sm">
-            <p className="cursor-pointer hover:underline">
+            <Link
+              to="/forgot-password"
+              onClick={closeLogin}
+              className="cursor-pointer hover:underline hover:text-blue-500"
+            >
               Forgot your password?
-            </p>
-            <p className="cursor-pointer mt-1 hover:underline">
+            </Link>
+
+            <br />
+            <Link
+              to={role === "customer" ? "/customer-signup" : "/agent-signup"}
+              onClick={closeLogin}
+              className="cursor-pointer mt-1 hover:underline hover:text-blue-500"
+            >
               Don’t have an account? Sign Up
-            </p>
+            </Link>
           </div>
 
-          {/* Social Login */}
           <SocialLogin />
-
         </div>
       </div>
     </div>
