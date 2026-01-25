@@ -1,4 +1,3 @@
-PaymentPage
 import React, { useState } from "react";
 
 function Payment() {
