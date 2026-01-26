@@ -27,15 +27,15 @@ function Payment() {
 
     if (priceDetailsStr) {
       const prices = JSON.parse(priceDetailsStr);
-      const members = familyMembersStr ? JSON.parse(familyMembersStr) : [];
-      const memberCount = members.length;
+      // Travelers count including primary traveler is in prices.totalTravelers
+      const travelerCount = prices.totalTravelers;
 
       setSummary({
         packageName: title,
         travelDates: `${dateStr} (Flexible)`,
-        travelers: `${memberCount} Traveler${memberCount !== 1 ? 's' : ''}`,
+        travelers: `${travelerCount} Traveler${travelerCount !== 1 ? 's' : ''}`,
         baseFare: prices.basePrice,
-        serviceFee: 100,
+        serviceFee: prices.taxesFees || 150,
         taxes: 50,
         discount: prices.discounts,
         total: totalAmount

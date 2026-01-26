@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 export const ageOptions = ["18-24 Years", "25-39 Years", "40-60 Years"];
@@ -9,11 +9,15 @@ export const relationOptions = ["Spouse", "Sibling", "Parent", "Friend", "Self"]
 export default function useBookTravelPackage() {
     const navigate = useNavigate();
     const { packageId } = useParams(); // Get package ID from URL 
+    const location = useLocation();
     const id = packageId;
 
+    // Use location state to pre-populate package data for better UX
+    const initialPackageData = location.state?.package || null;
+
     //Dynamic Package Data from Backend
-    const [packageData, setPackageData] = useState(null);
-    const [loading, setLoading] = useState(true);
+    const [packageData, setPackageData] = useState(initialPackageData);
+    const [loading, setLoading] = useState(!initialPackageData);
 
     useEffect(() => {
         if (!id) {
@@ -96,24 +100,30 @@ export default function useBookTravelPackage() {
     const pricePerPerson = packageData ? packageData.price : 0;
     const taxesFees = 150;
     const discounts = 50;
-    const totalTravelers = familyMembers.length;
+    const totalTravelers = familyMembers.length; // Count only added members
 
-    const baseFare = pricePerPerson * totalTravelers;
-    const finalAmount = totalTravelers > 0 ? (baseFare + taxesFees - discounts) : 0;
+    const totalBasePrice = pricePerPerson * totalTravelers;
+    const finalAmount = totalTravelers > 0 ? (totalBasePrice + taxesFees - discounts) : 0;
 
     // Handle Proceed
     const handleProceed = () => {
         console.log("handleProceed called. totalTravelers:", totalTravelers);
 
-        // Validation: Must have at least 1 traveler
+        // Validation: primary contact info and at least 1 traveler
+        if (!primaryTraveler.fullName) {
+            alert("Please provide the primary contact's full name.");
+            return;
+        }
+
         if (totalTravelers === 0) {
-            alert("Please add at least 1 traveler to proceed.");
+            alert("Please add at least one member to the travelers list to proceed.");
             return;
         }
 
         const priceDetailsToStore = {
             totalTravelers,
-            basePrice: baseFare,
+            pricePerPerson,
+            basePrice: totalBasePrice,
             taxesFees,
             discounts,
             finalAmount
@@ -151,7 +161,8 @@ export default function useBookTravelPackage() {
         setTravelDate,
         priceDetails: {
             totalTravelers,
-            basePrice: baseFare,
+            pricePerPerson,
+            basePrice: totalBasePrice,
             taxesFees,
             discounts,
             finalAmount
