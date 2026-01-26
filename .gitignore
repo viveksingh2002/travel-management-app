@@ -98,3 +98,7 @@ dist-ssr/
 ##############################
 .DS_Store
 Thumbs.db
+##############################
+## Project Uploads 
+##############################
+odyssey_travel_backend/uploads/
