@@ -42,10 +42,10 @@ export default function BrowsePackages() {
                                     {/* Image Section */}
                                     <div className="relative h-64 overflow-hidden">
                                         <img
-                                            src={`http://localhost:8080/api/packages/${pkg.packageId}/image`}
+                                            src={`http://localhost:8080${pkg.imageUrl}`}
                                             alt={pkg.title}
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                            onError={(e) => { e.target.src = 'https://via.placeholder.com/400x300?text=Explore+More' }}
+                                            onError={(e) => { e.target.src = 'https://placehold.co/400x300?text=Explore+More' }}
                                         />
                                         <div className="absolute top-4 right-4">
                                             <span className="bg-white/90 backdrop-blur-md text-blue-600 px-4 py-1.5 rounded-full text-xs font-bold shadow-lg">

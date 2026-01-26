@@ -1,6 +1,8 @@
 package com.odyssey.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,15 +28,18 @@ public class TravelPackage {
 
     private Integer duration;
 
-
+    @NotNull
+    @Positive
+    private int totalTravellers;
+    
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-        private byte[] image;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     @ManyToOne()
     @JoinColumn(name = "agent_id", nullable = false)
     private User agent;
+
 }
