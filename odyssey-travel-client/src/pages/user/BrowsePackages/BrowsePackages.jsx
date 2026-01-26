@@ -8,15 +8,14 @@ export default function BrowsePackages() {
     } = useBrowsePackages();
 
     const location = useNavigate();
-    const toBookingPage = (packageId) => {
-        location(`/user/book-package/${packageId}`);
+    const toBookingPage = (pkg) => {
+        location(`/user/book-package/${pkg.packageId}`, { state: { package: pkg } });
     }
 
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 font-sans transition-colors duration-300">
             <div className="max-w-7xl mx-auto">
 
-                {/* Hero Section */}
                 <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">
                         Discover Your Next <span className="text-blue-600">Adventure</span>
@@ -79,7 +78,7 @@ export default function BrowsePackages() {
                                                 <span className="text-2xl font-black text-gray-900 dark:text-white">₹{pkg.price}</span>
                                             </div>
                                             <button
-                                                onClick={() => toBookingPage(pkg.packageId)}
+                                                onClick={() => toBookingPage(pkg)}
                                                 className="bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-blue-200 dark:shadow-none transition-all hover:px-8"
                                             >
                                                 Book Now

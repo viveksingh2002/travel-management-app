@@ -104,6 +104,10 @@ public class BookingServiceImpl implements BookingService {
 			// booking.getBookingDate() if exists, else travelDate
 			dto.setTravelDate(booking.getTravelDate());
 			dto.setStatus(booking.getBookingStatus());
+			dto.setTravelers(booking.getTravelers());
+			if (booking.getPayment() != null) {
+				dto.setTotalAmount(booking.getPayment().getAmount());
+			}
 
 			// Get contact details
 			dto.setContactFullName(booking.getContactFullName());

@@ -32,7 +32,7 @@ export default function usePayment() {
 
     // Create the final booking payload
     const payload = {
-      userId: 2, //TODO: Get from auth
+      userId: userId, // Use dynamic userId from session
       packageId: packageId,
       travelDate: travelDate,
       travelers: travelers,
@@ -54,16 +54,19 @@ export default function usePayment() {
       const response = await axios.post("http://localhost:8080/api/bookings", payload);
       alert(response.data); // Status message from backend
 
-      // Clear session and go home
+      // Clear session
       sessionStorage.removeItem("primaryTraveler");
       sessionStorage.removeItem("familyMembers");
       sessionStorage.removeItem("specialRequest");
       sessionStorage.removeItem("travelDate");
       sessionStorage.removeItem("packageId");
+      sessionStorage.removeItem("packageTitle");
+      sessionStorage.removeItem("packagePrice");
       sessionStorage.removeItem("totalAmount");
       sessionStorage.removeItem("travelers");
+      sessionStorage.removeItem("priceDetails");
 
-      navigate("/user/browse-packages");
+      navigate("/user/my-bookings");
     } catch (error) {
       console.error("Booking error:", error);
       alert("Something went wrong. Please check your data.");

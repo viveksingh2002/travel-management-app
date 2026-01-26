@@ -189,7 +189,11 @@ export default function BookingPage() {
 
           <div className="space-y-3 text-gray-700 dark:text-gray-300">
             <div className="flex justify-between">
-              <span>{priceDetails.totalTravelers} Travelers (Base Price)</span>
+              <span className="font-medium">Base Package Price (per person)</span>
+              <span className="font-semibold">₹{priceDetails.pricePerPerson}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>{priceDetails.totalTravelers} Traveler{priceDetails.totalTravelers > 1 ? 's' : ''} (Total Base Price)</span>
               <span>₹{priceDetails.basePrice}</span>
             </div>
             <div className="flex justify-between">
@@ -197,7 +201,7 @@ export default function BookingPage() {
               <span>+₹{priceDetails.taxesFees}</span>
             </div>
             <div className="flex justify-between text-green-600 dark:text-green-400">
-              <span>Special Discounts</span>
+              <span>Special Discounts (5% OFF)</span>
               <span>-₹{priceDetails.discounts}</span>
             </div>
 
@@ -205,7 +209,7 @@ export default function BookingPage() {
 
             <div className="flex justify-between text-xl font-black text-gray-900 dark:text-white">
               <span>Final Total</span>
-              <span>₹{priceDetails.finalAmount}</span>
+              <span className="text-blue-600 dark:text-blue-400">₹{priceDetails.finalAmount}</span>
             </div>
           </div>
         </div>
