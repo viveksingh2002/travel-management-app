@@ -1,26 +1,18 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 function AddPackages() {
   const [packageData, setPackageData] = useState({
-    title: 'Explore Manali in 7 Days',
-    description:
-      "Discover the magic of Manali with our exclusive 7-day tour package. Experience the ultimate Himalayan adventure with thrilling activities amidst Manali's snow-capped peaks and valleys.",
-    destination: 'Manali, Himachal Pradesh',
-    price: '25000',
-    status: 'Draft',
-    startDate: '2025-09-15',
-    endDate: '2025-09-22',
-    maxTravelers: 20,
+    title: '',
+    description: '',
+    destination: '',
+    price: '',
+    startDate: '',
+    endDate: '',
+    maxTravelers: '',
   });
 
-  const [itinerary, setItinerary] = useState([
-    'Arrival in Manali, hotel check-in, evening at leisure.',
-    'Visit Hadimba Temple, Manu Temple, Vashisht Hot Springs.',
-    'Full day adventure in Solang Valley – paragliding, zorbing, ropeway.',
-    'Rohtang Pass excursion (subject to permit), snow activities.',
-    'Visit Rahalla Falls, local market shopping.',
-    'Departure day – transfer to bus/volvo stand.',
-  ]);
+  const [itinerary, setItinerary] = useState(['']);
 
   const [images, setImages] = useState([]); // Store real File objects for backend
   const [imagesPreview, setImagesPreview] = useState([]); // For display only
@@ -71,42 +63,58 @@ function AddPackages() {
   const handleSubmit = async (e, action = 'submit') => {
     e.preventDefault();
 
+    // Calculate duration from start and end dates
+    let duration = 1;
+    if (packageData.startDate && packageData.endDate) {
+      const start = new Date(packageData.startDate);
+      const end = new Date(packageData.endDate);
+      const diffTime = Math.abs(end - start);
+      duration = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    }
+
+    const packagePayload = {
+      title: packageData.title,
+      description: packageData.description,
+      destination: packageData.destination,
+      totalTravellers: packageData.maxTravelers,
+      price: parseFloat(packageData.price),
+      duration: duration,
+      agentId: 1, // todo agent id
+    };
+
+    console.log(`Submitting as ${action}:`, packagePayload);
+
+    if (images.length === 0) {
+      alert("Please upload at least one image.");
+      return;
+    }
+
     const formData = new FormData();
 
-    // Append package data as JSON
-    formData.append(
-      'package',
-      new Blob([JSON.stringify(packageData)], { type: 'application/json' })
-    );
+    formData.append("data",
+      new Blob([JSON.stringify(packagePayload)], {
+        type: "application/json"
+      }));
+    formData.append("image", images[0]);
 
-    // Append itinerary as array
-    formData.append('itinerary', JSON.stringify(itinerary));
+    try {
+      const response = await axios.post('http://localhost:8080/api/packages', formData);
 
-    // Append images
-    images.forEach((file) => {
-      formData.append('images', file);
-    });
-
-    // Optional: add action type (draft vs submit)
-    formData.append('action', action); // 'draft' or 'submit'
-
-    console.log(`Submitting as ${action}:`, {
-      package: packageData,
-      itinerary,
-      images: images.map((f) => f.name),
-    });
-
-    // TODO: Replace with axios/fetch call
-    // try {
-    //   const res = await axios.post('/api/packages', formData, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   });
-    //   console.log('Success:', res.data);
-    // } catch (err) {
-    //   console.error('Error:', err);
-    // }
-
-    alert(`Form submitted as ${action} — check console`);
+      if (response.status === 200 || response.status === 201) {
+        console.log('Success:', response.data);
+        alert("package added, sent for admin approval");
+      } else {
+        console.error('Error:', response.statusText);
+        alert("Failed to add package");
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      if (err.response && err.response.data) {
+        alert("Error: " + err.response.data);
+      } else {
+        alert("Error submitting package");
+      }
+    }
   };
 
   return (
@@ -184,21 +192,7 @@ function AddPackages() {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Status
-              </label>
-              <select
-                name="status"
-                value={packageData.status}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/30 dark:focus:border-indigo-400 dark:focus:ring-indigo-400/30 outline-none transition-all duration-150 appearance-none"
-              >
-                <option>Draft</option>
-                <option>Published</option>
-                <option>Archived</option>
-              </select>
-            </div>
+
 
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -347,18 +341,12 @@ function AddPackages() {
           <button
             type="button"
             className="px-8 py-3.5 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 font-medium transition-all duration-150"
-            onClick={() => handleSubmit({ preventDefault: () => {} }, 'cancel')}
+            onClick={() => handleSubmit({ preventDefault: () => { } }, 'cancel')}
           >
             Cancel
           </button>
 
-          <button
-            type="button"
-            className="px-8 py-3.5 border border-indigo-400 dark:border-indigo-500 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950 rounded-xl font-medium transition-all duration-150"
-            onClick={(e) => handleSubmit(e, 'draft')}
-          >
-            Save as Draft
-          </button>
+
 
           <button
             type="submit"

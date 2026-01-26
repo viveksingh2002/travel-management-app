@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,8 +38,8 @@ public class Booking {
     private String specialRequest;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<TravellersDetails> companionDetails = new ArrayList<>();
-
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private User user;
@@ -45,4 +47,7 @@ public class Booking {
     @ManyToOne
     @JoinColumn(name = "package_id", nullable = false)
     private TravelPackage travelPackage;
+
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    private Payment payment;
 }

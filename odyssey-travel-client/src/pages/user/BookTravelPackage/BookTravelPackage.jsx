@@ -18,13 +18,13 @@ export default function BookingPage() {
     handleProceed
   } = useBookTravelPackage();
 
-  // if (loading) {
-  //   return (
-  //     <div className="bg-white dark:bg-gray-700 min-h-screen flex items-center justify-center">
-  //       <p className="text-xl font-bold text-blue-500 animate-pulse">Loading package info...</p>
-  //     </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <div className="bg-white dark:bg-gray-700 min-h-screen flex items-center justify-center">
+        <p className="text-xl font-bold text-blue-500 animate-pulse">Loading package info...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white dark:bg-gray-700 min-h-screen py-10 transition-colors duration-300">
@@ -37,7 +37,7 @@ export default function BookingPage() {
         {/* 1. Primary Traveler Details */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
           <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-6 border-b pb-2">
-            Primary Traveler Details
+            Contact Details
           </h2>
 
           <div className="space-y-4">
@@ -48,6 +48,7 @@ export default function BookingPage() {
                 placeholder="Enter your full name"
                 className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                 value={primaryTraveler.fullName}
+
                 onChange={(e) => updatePrimaryDetail("fullName", e.target.value)}
               />
             </div>
@@ -60,19 +61,32 @@ export default function BookingPage() {
                   placeholder="example@email.com"
                   className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   value={primaryTraveler.email}
+
                   onChange={(e) => updatePrimaryDetail("email", e.target.value)}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Mobile Number</label>
                 <input
-                  type="text"
+                  type="tel"
                   placeholder="+91 XXXXXXXXXX"
                   className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
                   value={primaryTraveler.mobile}
+                  required
+
                   onChange={(e) => updatePrimaryDetail("mobile", e.target.value)}
                 />
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Travel Date</label>
+              <input
+                type="date"
+                className="w-full p-3 border dark:border-gray-600 rounded bg-gray-50 dark:bg-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                value={primaryTraveler.travelDate}
+                onChange={(e) => updatePrimaryDetail("travelDate", e.target.value)}
+              />
             </div>
           </div>
         </div>
@@ -81,7 +95,7 @@ export default function BookingPage() {
         <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md border dark:border-gray-600 mb-8">
           <div className="flex justify-between items-center mb-6 border-b pb-2">
             <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400">
-              Family Members
+              Travelers
             </h2>
             <button
               onClick={addMember}

@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-
+import usePayment from "./usePayment";
+import { useNavigate } from "react-router-dom";
 function Payment() {
+  // Use the custom hook that connects to backend
+  const { packageId, totalAmount, handlePayNow, paymentMethod, setPaymentMethod } = usePayment();
+  const navigate = useNavigate();
+  //use this to set the default values when data is not available
   const [summary, setSummary] = useState({
     packageName: "Loading...",
     bookingId: "...",
@@ -18,12 +23,7 @@ function Payment() {
     const title = sessionStorage.getItem("packageTitle") || "Travel Package";
     const priceDetailsStr = sessionStorage.getItem("priceDetails");
     const familyMembersStr = sessionStorage.getItem("familyMembers");
-
-    // Generate a pseudo Booking ID for valid display
-    const pseudoId = "BKG-" + Math.floor(100000 + Math.random() * 900000);
-
-    // Default dates - in a real app these would be selected dates
-    const dateStr = new Date().toISOString().split('T')[0];
+    const dateStr = sessionStorage.getItem("travelDate") || new Date().toISOString().split('T')[0];
 
     if (priceDetailsStr) {
       const prices = JSON.parse(priceDetailsStr);
@@ -32,38 +32,20 @@ function Payment() {
 
       setSummary({
         packageName: title,
-        bookingId: pseudoId,
         travelDates: `${dateStr} (Flexible)`,
         travelers: `${memberCount} Traveler${memberCount !== 1 ? 's' : ''}`,
         baseFare: prices.basePrice,
-        serviceFee: prices.taxesFees, // Mapping taxes & fees to service fee for display split, or just use one
-        taxes: 0, // already included in taxesFees above usually, or split if needed. 
-        // Let's rely on what we have: basePrice, taxesFees, discounts, finalAmount
+        serviceFee: 100,
+        taxes: 50,
         discount: prices.discounts,
-        total: prices.finalAmount,
-        // Detailed split adjustment for this specific UI template if needed:
-        // The UI shows Base, Service, Taxes, Discount.
-        // Our 'priceDetails' has base, taxesFees, discounts.
-        // We can map taxesFees -> Taxes and set ServiceFee to 0 or split it.
-        // Let's set Taxes = priceDetails.taxesFees
-      });
-
-      // Re-adjusting to match exact fields from priceDetails
-      setSummary({
-        packageName: title,
-        bookingId: pseudoId,
-        travelDates: `${dateStr} (Flexible)`,
-        travelers: `${memberCount} Traveler${memberCount !== 1 ? 's' : ''}`,
-        baseFare: prices.basePrice,
-        serviceFee: 0,
-        taxes: prices.taxesFees,
-        discount: prices.discounts,
-        total: prices.finalAmount,
+        total: totalAmount
       });
     }
   }, []);
 
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const toBookTravelPage = () => {
+    navigate(`/user/book-package/${packageId}`);
+  };
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
   const [expiry, setExpiry] = useState("");
@@ -71,23 +53,15 @@ function Payment() {
   const [saveCard, setSaveCard] = useState(false);
 
   const formatAmount = (amount) =>
-    `₹${amount.toLocaleString("en-IN", {
+    `₹${(amount || 0).toLocaleString("en-IN", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     })}`;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Payment attempt:", {
-      method: paymentMethod,
-      cardNumber: cardNumber.replace(/\s/g, ""),
-      cardHolder,
-      expiry,
-      cvv,
-      saveCard,
-      amount: summary.total,
-    });
-    alert("Payment form submitted — check console (real gateway next)");
+    // Call the backend integration function from usePayment hook
+    handlePayNow();
   };
 
   return (
@@ -113,10 +87,6 @@ function Payment() {
                   <span className="text-gray-600 dark:text-gray-400 font-medium">Package Name</span>
                   <span className="font-medium text-gray-900 dark:text-gray-100">{summary.packageName}</span>
                 </div>
-                <div className="flex justify-between py-3 border-b border-gray-100 dark:border-gray-700">
-                  <span className="text-gray-600 dark:text-gray-400 font-medium">Booking ID</span>
-                  <span className="font-medium text-gray-900 dark:text-gray-100">{summary.bookingId}</span>
-                </div>
 
                 {/* Travel Dates */}
                 <div className="flex justify-between items-center py-3 border-b border-gray-100 dark:border-gray-700">
@@ -127,7 +97,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit dates page...")}
+                    onClick={() => toBookTravelPage()}
                   >
                     Edit Dates
                   </button>
@@ -142,7 +112,7 @@ function Payment() {
                   <button
                     type="button"
                     className="text-sm font-medium text-green-600 dark:text-green-400 hover:underline transition-all duration-150"
-                    onClick={() => alert("Redirecting to edit guests page...")}
+                    onClick={() => toBookTravelPage()}
                   >
                     Edit Guests
                   </button>

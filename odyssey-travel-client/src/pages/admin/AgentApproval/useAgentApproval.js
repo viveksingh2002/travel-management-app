@@ -1,57 +1,56 @@
-import {useState,useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {toast} from 'react-toastify';
+import { toast } from 'react-toastify';
 
-const useAgentApproval=()=>{
-    const [agents,setAgents]=useState([]);
-    const[loading,setLoading]=useState(true);
-    const [error,setError]=useState(null);
+const useAgentApproval = () => {
+    const [agents, setAgents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    useEffect(()=>{
-        fetchPendingAgents();
-    },[]);
-
-    const fetchPendingAgents= async()=>{
-        try{
-          const agent= await axios.get("http://localhost:8080/admin/pendingAgents");
-          setAgent(agent.data);
-          setError(null);
-        }catch(error)
-        {
-            console.log("error fetching agents:",error);
-            setError("failed to load pending agents");
-        }
-        finally
-        {
+    // Fetch all users with role 'AGENT'
+    const fetchAgents = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get("http://localhost:8080/api/users/role/agent");
+            setAgents(response.data);
+            setError(null);
+        } catch (error) {
+            console.error("Error fetching agents:", error);
+            setError("Failed to load agents. Is your backend running?");
+        } finally {
             setLoading(false);
         }
     };
 
-    const handleApprove=async(id)=>{
-        try{
-           await axios.put(`http://localhost:8080/admin/agents/${id}/approve`);
-           setAgent((prevAgents)=>prevAgents.filter((agent)=>{agent.id!==id}));
-           toast.success("agent approved successfully");
-        }catch(error)
-        {
-            console.log("error approving agent",error);
-            toast.error("error approving agent");
+    useEffect(() => {
+        fetchAgents();
+    }, []);
+
+    // Activate an agent
+    const handleApprove = async (id) => {
+        try {
+            await axios.post(`http://localhost:8080/api/users/${id}/status/true`);
+            toast.success("Agent activated successfully");
+            fetchAgents(); // Refresh the list to show updated status
+        } catch (error) {
+            console.error("Error activating agent", error);
+            toast.error("Failed to activate agent");
         }
     };
 
-    const handleReject=async()=>{
-        try{
-          await axios.put(`http://localhost:8080/admin/agents/${id}/reject`);
-          setAgent((prevAgents)=>prevAgents.filter((agent)=>agent.id!==id));
-          toast.success("agent rejected successfully");
-        }catch(error){
-            console.log("error in rejecting agent",error);
-            toast.error("failed to reject agent");
-
+    // Inactivate/Reject an agent
+    const handleReject = async (id) => {
+        try {
+            await axios.post(`http://localhost:8080/api/users/${id}/status/false`);
+            toast.success("Agent inactivated successfully");
+            fetchAgents(); // Refresh the list
+        } catch (error) {
+            console.error("Error inactivating agent", error);
+            toast.error("Failed to inactivate agent");
         }
     };
 
-    return{
+    return {
         agents,
         loading,
         error,

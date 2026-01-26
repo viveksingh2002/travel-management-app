@@ -12,7 +12,8 @@ export default function useUserManagement() {
     const fetchUsers = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(API_URL);
+            // Fetch only CLIENT role users
+            const response = await axios.get(`${API_URL}/role/CLIENT`);
             // Map backend data to frontend format
             const mappedUsers = response.data.map(user => ({
                 id: user.userId,

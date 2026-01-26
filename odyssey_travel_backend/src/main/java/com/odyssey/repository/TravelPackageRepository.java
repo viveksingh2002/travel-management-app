@@ -9,10 +9,12 @@ import com.odyssey.entity.Status;
 import com.odyssey.entity.TravelPackage;
 
 @Repository
-public interface TravelPackageRepository extends JpaRepository<TravelPackage,Long> {
+public interface TravelPackageRepository extends JpaRepository<TravelPackage, Long> {
 
 	List<TravelPackage> findByStatus(Status status);
-	
+
+	List<TravelPackage> findByStatusAndAgent_ActiveTrue(Status status);
+
 	List<TravelPackage> findByAgent_UserId(Long agentId);
-	
+
 }

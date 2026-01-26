@@ -1,6 +1,7 @@
 package com.odyssey.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,6 +86,8 @@ public class BookingServiceImpl implements BookingService {
 		payment.setPaymentStatus("PAID");
 		payment.setBooking(booking);
 
+		booking.setPayment(payment); // Set bidirectional relationship
+
 		paymentRepository.save(payment);
 	}
 
@@ -116,18 +119,11 @@ public class BookingServiceImpl implements BookingService {
 				cDto.setGender(c.getGender());
 				cDto.setRelation(c.getRelation());
 				return cDto;
-			}).collect(java.util.stream.Collectors.toList());
+			}).collect(Collectors.toList());
 
 			dto.setCompanions(companions);
-
-			// Amount and Payment
-			// This part might need joining with Payment table if multiple payments are
-			// allowed,
-			// but based on current logic we simplify:
-			// dto.setTotalAmount(...);
-
 			return dto;
-		}).collect(java.util.stream.Collectors.toList());
+		}).collect(Collectors.toList());
 	}
 
 }
