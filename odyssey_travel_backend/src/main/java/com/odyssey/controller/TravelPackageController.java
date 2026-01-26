@@ -1,5 +1,8 @@
 package com.odyssey.controller;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,7 @@ import com.odyssey.service.TravelPackageService;
 
 @RestController
 @RequestMapping("/api/packages")
-@CrossOrigin
+@CrossOrigin("*")
 public class TravelPackageController {
 
 	@Autowired
@@ -37,8 +40,21 @@ public class TravelPackageController {
 		System.out.println("FILE = " + image.getOriginalFilename());
 		TravelPackageDto travelpackage;
 		try {
-			travelpackage = objectmapper.readValue(travelPackage,TravelPackageDto.class);
-			travelService.savePackage(travelpackage,image);
+			//Convert JSON string to DTO
+			travelpackage = objectmapper.readValue(travelPackage, TravelPackageDto.class);
+			
+			//Save image to server
+			String uploadDir = "uploads/packages/";
+	        Files.createDirectories(Paths.get(uploadDir));
+
+	        String fileName =
+	                System.currentTimeMillis() + "_" + image.getOriginalFilename();
+
+	        Path filePath = Paths.get(uploadDir + fileName);
+	        Files.write(filePath, image.getBytes());
+
+	        String imageUrl = "/uploads/packages/" + fileName;
+			travelService.savePackage(travelpackage, imageUrl);
 			return ResponseEntity.ok("Package submitted for admin approval");
 		} catch (Exception e) {
 
@@ -71,12 +87,12 @@ public class TravelPackageController {
 		return ResponseEntity.ok("Status updated: " + status);
 	}
 
-	@GetMapping("/{id}/image")
-	public ResponseEntity<byte[]> getPackageImage(@PathVariable Long id) {
+	@GetMapping("/{imageUrl}")
+	public ResponseEntity<String> getPackageImage(@PathVariable Long id) {
 		TravelPackage pkg = travelService.findPackageById(id);
 		return ResponseEntity.ok()
 				.contentType(MediaType.IMAGE_JPEG)
-				.body(pkg.getImage());
+				.body(pkg.getImageUrl());
 	}
-	
+
 }

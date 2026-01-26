@@ -76,9 +76,10 @@ function AddPackages() {
       title: packageData.title,
       description: packageData.description,
       destination: packageData.destination,
+      totalTravellers: packageData.maxTravelers,
       price: parseFloat(packageData.price),
       duration: duration,
-      agentId: 1, // Hardcoded as per plan
+      agentId: 1, // todo agent id
     };
 
     console.log(`Submitting as ${action}:`, packagePayload);
@@ -89,7 +90,11 @@ function AddPackages() {
     }
 
     const formData = new FormData();
-    formData.append("data", JSON.stringify(packagePayload));
+
+    formData.append("data",
+      new Blob([JSON.stringify(packagePayload)], {
+        type: "application/json"
+      }));
     formData.append("image", images[0]);
 
     try {

@@ -30,10 +30,14 @@ public class TravelPackageDto {
 
 	    @NotBlank
 	    private String destination;
+	    
+	    @NotNull
+	    @Positive
+	    private int totalTravellers;
 
 	    @NotNull
 	    private Long agentId;
 
-	    // getters & setters
+	    
 	}
 

@@ -12,6 +12,7 @@ function TravelPackageApproval() {
     try {
       const response = await axios.get("http://localhost:8080/api/packages/admin/pending");
       setPendingPackages(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching packages:", error);
       setMessage("Failed to load pending packages.");
@@ -74,10 +75,10 @@ function TravelPackageApproval() {
                   {/* Image Container */}
                   <div className="relative h-44 overflow-hidden">
                     <img
-                      src={`http://localhost:8080/api/packages/${pkg.packageId}/image`}
+                      src={`http://localhost:8080${pkg.imageUrl}`}
                       alt={pkg.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => { e.target.src = "https://via.placeholder.com/400x250?text=No+Image" }}
+                      onError={(e) => { e.target.src = "https://placehold.co/400x250?text=No+Image" }}
                     />
                     <div className="absolute top-3 left-3">
                       <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-[10px] font-bold shadow-lg">

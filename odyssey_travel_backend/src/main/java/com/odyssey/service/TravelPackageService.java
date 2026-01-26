@@ -31,5 +31,6 @@ public interface TravelPackageService {
     void updatePackageStatus(Long id, String status);
 
     // for saving travel package
-    void savePackage(TravelPackageDto dto, MultipartFile image);
+	void savePackage(TravelPackageDto travelpackage, String imageUrl);
+
 }
