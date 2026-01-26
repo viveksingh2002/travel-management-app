@@ -17,28 +17,25 @@ import com.odyssey.repository.TravelPackageRepository;
 import com.odyssey.repository.UserRepository;
 import com.odyssey.service.TravelPackageService;
 
-
-
 @Service
 @Transactional
 public class TravelPackageServiceImpl implements TravelPackageService {
 
 	@Autowired
 	private TravelPackageRepository travelRepo;
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Override
-	public TravelPackage findPackageById(Long id)
-	{
-		return travelRepo.findById(id).orElseThrow(()->new RuntimeException("Package not found"));
+	public TravelPackage findPackageById(Long id) {
+		return travelRepo.findById(id).orElseThrow(() -> new RuntimeException("Package not found"));
 	}
 
 	@Override
-	public void savePackage(TravelPackageDto dto,MultipartFile image) {
+	public void savePackage(TravelPackageDto dto, MultipartFile image) {
 		// TODO Auto-generated method stub
-		
+
 		User agent = userRepo.findById(dto.getAgentId())
 				.orElseGet(() -> userRepo.findAll().stream().findFirst()
 						.orElseThrow(() -> new RuntimeException("No users found in database. Please register a user/agent first.")));
@@ -57,41 +54,45 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 	            travelPackage.setImage(image.getBytes());
 	            travelPackage.setStatus(Status.PENDING); // admin approval later
 
-	            travelRepo.save(travelPackage);
 
-	        } catch (IOException e) {
-	            throw new RuntimeException("Failed to save image", e);
-	        }		 
+			travelRepo.save(travelPackage);
+
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to save image", e);
+		}
 	}
 
 	@Override
 	public List<TravelPackage> getAllPackages() {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 		return travelRepo.findAll();
 	}
 
 	@Override
-	public List<TravelPackage> getPackagesByStatus() {
-		// TODO Auto-generated method stub
-		
-		return travelRepo.findByStatus(Status.APPROVED);
+	public List<TravelPackage> getPackagesByStatusAndAgentActive(Status status) {
+		return travelRepo.findByStatusAndAgent_ActiveTrue(status);
 	}
 
 	@Override
 	public List<TravelPackage> getPackagesByAgentId(Long agentId) {
-		// TODO Auto-generated method stub
 		return travelRepo.findByAgent_UserId(agentId);
 	}
 
 	@Override
 	public Optional<TravelPackage> getPackageById(Long id) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		return travelRepo.findById(id);
 	}
 
 	@Override
-	public TravelPackage updatePackageStatus(Long id, Status status) {
-		// TODO Auto-generated method stub
-		return null;
+	public void updatePackageStatus(Long id, String status) {
+		TravelPackage pkg = travelRepo.findById(id).orElseThrow(() -> new RuntimeException("Package not found"));
+		pkg.setStatus(Status.valueOf(status.toUpperCase()));
+		travelRepo.save(pkg);
+	}
+
+	@Override
+	public List<TravelPackage> getPackagesByStatus(Status status) {
+
+		return travelRepo.findByStatus(status);
 	}
 }

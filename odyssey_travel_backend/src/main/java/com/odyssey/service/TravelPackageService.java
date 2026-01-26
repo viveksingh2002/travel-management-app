@@ -10,18 +10,26 @@ import com.odyssey.entity.Status;
 import com.odyssey.entity.TravelPackage;
 
 public interface TravelPackageService {
- 
-	TravelPackage findPackageById(Long id);
 
-	List<TravelPackage> getAllPackages();
+    TravelPackage findPackageById(Long id);
 
-    List<TravelPackage> getPackagesByStatus();
+    // for admin
+    List<TravelPackage> getAllPackages();
 
+    // admin will approve travel packages
+    List<TravelPackage> getPackagesByStatus(Status status);
+
+    // user will be able to see only approved and active agents travel packages
+    List<TravelPackage> getPackagesByStatusAndAgentActive(Status status);
+
+    // agent will be able to see only their travel packages
     List<TravelPackage> getPackagesByAgentId(Long agentId);
 
     Optional<TravelPackage> getPackageById(Long id);
 
-    TravelPackage updatePackageStatus(Long id, Status status);
+    // for updating approved status
+    void updatePackageStatus(Long id, String status);
 
-	void savePackage(TravelPackageDto dto, MultipartFile image);
+    // for saving travel package
+    void savePackage(TravelPackageDto dto, MultipartFile image);
 }

@@ -22,14 +22,17 @@ public class TravelPackage {
     private String description;
     private String destination;
     private double price;
+
+
     private Integer duration;
 
+
     @Enumerated(EnumType.STRING)
-    private  Status status;
-    
+    private Status status;
+
     @Lob
-    //@Column(columnDefinition = "LONGBLOB")
-    private byte[] image;
+    @Column(columnDefinition = "LONGBLOB")
+        private byte[] image;
 
     @ManyToOne()
     @JoinColumn(name = "agent_id", nullable = false)

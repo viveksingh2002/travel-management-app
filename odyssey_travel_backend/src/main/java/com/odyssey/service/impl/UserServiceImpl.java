@@ -1,6 +1,8 @@
 package com.odyssey.service.impl;
 
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -12,7 +14,20 @@ import com.odyssey.service.UserService;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private final UserRepository userRepository;
+
+    @Override
+    public List<User> getUsersByRole(com.odyssey.entity.Role role) {
+        return userRepository.findByRole(role);
+    }
+
+    @Override
+    public User updateUserStatus(Long userId, boolean active) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActive(active);
+        return userRepository.save(user);
+    }
 
     @Override
     public User createUser(User user) {
@@ -35,12 +50,6 @@ public class UserServiceImpl implements UserService {
     public User deactivateUser(Long userId) {
         User user = getUserById(userId);
         user.setActive(false);
-        return userRepository.save(user);
-    }
-    @Override
-    public User updateUserStatus(Long id, boolean active) {
-        User user = getUserById(id);
-        user.setActive(active);
         return userRepository.save(user);
     }
 }

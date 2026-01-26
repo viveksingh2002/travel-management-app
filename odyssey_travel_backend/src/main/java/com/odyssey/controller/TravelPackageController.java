@@ -1,5 +1,7 @@
 package com.odyssey.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odyssey.dto.TravelPackageDto;
+import com.odyssey.entity.Status;
 import com.odyssey.entity.TravelPackage;
 import com.odyssey.service.TravelPackageService;
 
@@ -24,34 +27,56 @@ public class TravelPackageController {
 
 	@Autowired
 	private TravelPackageService travelService;
-	
-	private final ObjectMapper objectmapper=new ObjectMapper();
-	@PostMapping( consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<String> createPackage(@RequestPart("data") String travelPackage, @RequestPart("image") MultipartFile image)
-	{
+
+	private final ObjectMapper objectmapper = new ObjectMapper();
+
+	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<String> createPackage(@RequestPart("data") String travelPackage,
+			@RequestPart("image") MultipartFile image) {
 		System.out.println("DATA = " + travelPackage);
-	    System.out.println("FILE = " + image.getOriginalFilename());
-	    TravelPackageDto travelpackage;
+		System.out.println("FILE = " + image.getOriginalFilename());
+		TravelPackageDto travelpackage;
 		try {
 			travelpackage = objectmapper.readValue(travelPackage,TravelPackageDto.class);
 			travelService.savePackage(travelpackage,image);
 			return ResponseEntity.ok("Package submitted for admin approval");
 		} catch (Exception e) {
+
 			e.printStackTrace();
 			return ResponseEntity.status(500).body("Error: " + e.getMessage());
 		}
-		
+
 	}
-	
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity <TravelPackage> getTravelPackageById(@PathVariable Long id)
-	{
-		TravelPackage travelPackage=travelService.findPackageById(id);
+	public ResponseEntity<TravelPackage> getTravelPackageById(@PathVariable Long id) {
+		TravelPackage travelPackage = travelService.findPackageById(id);
 		return ResponseEntity.ok(travelPackage);
-		
 	}
-	
-	
+
+	@GetMapping
+	public ResponseEntity<List<TravelPackage>> getAllApprovedPackages() {
+		// Only show Approved packages from Active Agents
+		return ResponseEntity.ok(travelService.getPackagesByStatusAndAgentActive(Status.APPROVED));
+	}
+
+	@GetMapping("/admin/pending")
+	public ResponseEntity<List<TravelPackage>> getPendingPackages() {
+		return ResponseEntity.ok(travelService.getPackagesByStatus(Status.PENDING));
+	}
+
+	@PostMapping("/{id}/status/{status}")
+	public ResponseEntity<String> updatePackageStatus(@PathVariable Long id, @PathVariable String status) {
+		travelService.updatePackageStatus(id, status);
+		return ResponseEntity.ok("Status updated: " + status);
+	}
+
+	@GetMapping("/{id}/image")
+	public ResponseEntity<byte[]> getPackageImage(@PathVariable Long id) {
+		TravelPackage pkg = travelService.findPackageById(id);
+		return ResponseEntity.ok()
+				.contentType(MediaType.IMAGE_JPEG)
+				.body(pkg.getImage());
+	}
 	
 }
