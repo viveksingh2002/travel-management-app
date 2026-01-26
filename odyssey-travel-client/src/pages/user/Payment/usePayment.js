@@ -5,8 +5,7 @@ export default function usePayment() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const navigate = useNavigate();
 
-  // ---- Read booking data from sessionStorage ----
-  // We use || 0 or || 1 to make sure they are real numbers, not NaN
+  // Read booking data from sessionStorage
   const userId = Number(sessionStorage.getItem("userId")) || 2;
   const packageId = Number(sessionStorage.getItem("packageId")) || 1;
   const travelDate = sessionStorage.getItem("travelDate") || new Date().toISOString().split('T')[0];
@@ -18,7 +17,7 @@ export default function usePayment() {
   const familyMembers = JSON.parse(sessionStorage.getItem("familyMembers") || "[]");
   const specialRequest = sessionStorage.getItem("specialRequest");
 
-  // ---- Pay Now Handler ----
+  // Pay Now Handler
   const handlePayNow = async () => {
 
     // Map family members to Companions for backend
@@ -33,7 +32,7 @@ export default function usePayment() {
 
     // Create the final booking payload
     const payload = {
-      userId: 2,
+      userId: 2, //TODO: Get from auth
       packageId: packageId,
       travelDate: travelDate,
       travelers: travelers,
@@ -72,9 +71,10 @@ export default function usePayment() {
   };
 
   return {
+    packageId,
     totalAmount,
     handlePayNow,
     paymentMethod,
-    setPaymentMethod // Must return this so the tabs work!
+    setPaymentMethod
   };
 }
