@@ -15,6 +15,6 @@ public interface TravelPackageRepository extends JpaRepository<TravelPackage, Lo
 
 	List<TravelPackage> findByStatusAndAgent_ActiveTrue(Status status);
 
-	List<TravelPackage> findByAgent_UserId(Long agentId);
+	List<TravelPackage> findByAgentId(Long agentId);
 
 }
