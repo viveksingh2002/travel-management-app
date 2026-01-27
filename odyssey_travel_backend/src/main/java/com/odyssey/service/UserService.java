@@ -2,21 +2,24 @@ package com.odyssey.service;
 
 import java.util.List;
 
+import com.odyssey.dto.UserCreateRequestDto;
+import com.odyssey.dto.UserResponseDto;
 import com.odyssey.entity.Role;
 import com.odyssey.entity.User;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    List<UserResponseDto> getAllUsers();
 
-    User createUser(User user);
+    UserResponseDto createUser(UserCreateRequestDto userCreateRequestDto);
 
-    User getUserById(Long userId);
+    UserResponseDto getUserById(Long userId);
 
-    User deactivateUser(Long userId);
+	List<UserResponseDto> getUsersByRole(Role role);
 
-	List<User> getUsersByRole(Role role);
-
-	User updateUserStatus(Long userId, boolean active);
+    UserResponseDto updateUserStatus(Long userId, boolean active);
 
 }

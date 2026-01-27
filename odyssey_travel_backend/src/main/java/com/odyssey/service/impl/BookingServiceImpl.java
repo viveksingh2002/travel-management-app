@@ -93,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<BookingResponseDto> getAllBookings(Long userId) {
-		List<Booking> bookings = bookingRepository.findByUser_UserId(userId);
+		List<Booking> bookings = bookingRepository.findByUser_Id(userId);
 
 		return bookings.stream().map(booking -> {
 			BookingResponseDto dto = new BookingResponseDto();

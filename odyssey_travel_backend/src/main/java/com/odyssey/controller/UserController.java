@@ -3,7 +3,10 @@ package com.odyssey.controller;
 import java.util.List;
 
 
+import com.odyssey.dto.UserCreateRequestDto;
+import com.odyssey.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,47 +25,42 @@ import com.odyssey.entity.User;
 import com.odyssey.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UserController {
 
-	@Autowired
     private final UserService userService;
 
-    // CREATE USER
+    // create user api
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserCreateRequestDto userCreateRequestDto) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(userService.createUser(userCreateRequestDto));
     }
 
-    // GET USER BY ID
-    @GetMapping("/{id}")
-    public User getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-    // GET ALL USERS (ADMIN)
+    // get all user api
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
 
     }
 
-    // DEACTIVATE USER
-    @PutMapping("/{id}/deactivate")
-    public User deactivate(@PathVariable Long id) {
-        return userService.deactivateUser(id);
+    // get user by id api
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
     }
+
     // UPDATE USER STATUS (BLOCK/UNBLOCK)
     @PutMapping("/{id}/block")
-    public User updateStatus(@PathVariable Long id, @RequestParam boolean blocked) {
+    public ResponseEntity<UserResponseDto> updateStatus(@PathVariable Long id, @RequestParam boolean blocked) {
         // blocked=true means active=false
-        return userService.updateUserStatus(id, !blocked);
+        return ResponseEntity.ok(userService.updateUserStatus(id, !blocked));
     }
 
     @GetMapping("/role/{role}")
-    public ResponseEntity<List<User>> getUsersByRole(@PathVariable String role) {
+    public ResponseEntity<List<UserResponseDto>> getUsersByRole(@PathVariable String role) {
         return ResponseEntity.ok(userService.getUsersByRole(Role.valueOf(role.toUpperCase())));
     }
 
