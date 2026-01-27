@@ -1,23 +1,37 @@
 import { Outlet } from "react-router-dom";
 import AgentSidebar from "../components/Navbar/Agent/AgentSideBar";
 import AgentTopNavBar from "../components/Navbar/Agent/AgentTopNavBar";
+
 export default function AgentLayout() {
   return (
-    <div>
+    <div className="min-h-screen bg-gray-100">
+      
+      {/* Sidebar */}
       <AgentSidebar />
+
+      {/* Top Navbar */}
       <AgentTopNavBar />
 
+      {/* Main Content Area */}
       <div
         style={{
-          marginLeft: "240px",
-          marginTop: "70px",
-          padding: "20px",
+          marginLeft: "240px",   // width of sidebar
+          marginTop: "70px",     // height of top navbar
+          padding: "24px",
         }}
       >
-        <Outlet />   {/* Pages load here */}
+        {/* 🔥 Nested pages render here */}
+        <Outlet />
       </div>
-      <footer className="text-center text-muted small py-4">
-            © 2025 Odyssey Tours & Travels. All rights reserved.
+
+      {/* Footer */}
+      <footer
+        style={{
+          marginLeft: "240px",
+        }}
+        className="text-center text-gray-500 text-sm py-4 border-t bg-white"
+      >
+        © 2025 Odyssey Tours & Travels. All rights reserved.
       </footer>
     </div>
   );
