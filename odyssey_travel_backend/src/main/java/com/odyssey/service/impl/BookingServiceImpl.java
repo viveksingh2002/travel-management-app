@@ -48,8 +48,19 @@ public class BookingServiceImpl implements BookingService {
 				.orElseThrow(() -> new RuntimeException("User not found"));
 
 		// 2. Get Package
-		TravelPackage travelPackage = travelPackageRepository.findById(bookingRequest.getPackageId())
+		TravelPackage travelPackage = travelPackageRepository.findByIdForUpdate(bookingRequest.getPackageId())
 				.orElseThrow(() -> new RuntimeException("Package not found"));
+
+		int requestedSeats = bookingRequest.getTravelers();
+		int availableSeats = travelPackage.getTotalTravellers();
+
+		// check if seats are available
+		if (availableSeats < requestedSeats) {
+			throw new RuntimeException("Not enough seats available");
+		}
+
+		// Deduct seats safely
+		travelPackage.setTotalTravellers(availableSeats - requestedSeats);
 
 		// 3. Create Booking
 		Booking booking = new Booking();
@@ -84,8 +95,9 @@ public class BookingServiceImpl implements BookingService {
 		Payment payment = new Payment();
 		payment.setAmount(bookingRequest.getTotalAmount());
 		payment.setPaymentStatus("PAID");
-		payment.setBooking(booking);
+		payment.setBooking(booking); // payment will have booking id
 
+		// booking will have payment id
 		booking.setPayment(payment); // Set bidirectional relationship
 
 		paymentRepository.save(payment);

@@ -76,8 +76,8 @@ const Support = () => {
   }, []);
 
   return (
-    <div style={{ padding: "20px", maxWidth: "800px" }}>
-      <h2>User Support</h2>
+    <div className="p-20 max-w-800 dark:bg-gray-700 dark:bg-gray-500 dark:text-white">
+      <h2 className="text-center font-bold text-2xl pb-20">User Support</h2>
 
       {/* ================= MESSAGES ================= */}
       {errorMessage && (
@@ -94,18 +94,15 @@ const Support = () => {
 
       {/* ================= RAISE TICKET FORM ================= */}
       <div
-        style={{
-          border: "1px solid #ddd",
-          padding: "15px",
-          marginBottom: "20px",
-        }}
+      className="border-2 p-10 mb-10 rounded-xl dark:text-white"
       >
-        <h3>Raise Ticket</h3>
+        <h3 className="font-bold ">Raise Ticket</h3>
 
         <input
           type="text"
           placeholder="Subject"
           value={subject}
+          className="placeholder:text-gray-100 hover:bg-gray-400 hover:text-white hover:outline-2 hover:outline-offset-1 rounded-xl dark:bg-gray-500 dark:text-white"
           onChange={(e) => setSubject(e.target.value)}
           style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
         />
@@ -113,6 +110,7 @@ const Support = () => {
         <textarea
           placeholder="Description"
           value={description}
+          className="placeholder:text-gray-100 hover:bg-gray-400 hover:text-white hover:outline-2 hover:outline-offset-1 rounded-xl dark:bg-gray-500 dark:text-white"
           onChange={(e) => setDescription(e.target.value)}
           rows={4}
           style={{ width: "100%", marginBottom: "10px", padding: "8px" }}
@@ -121,8 +119,8 @@ const Support = () => {
         <select
           value={priority}
           onChange={(e) => setPriority(e.target.value)}
-          style={{ marginBottom: "10px", padding: "6px" }}
-        >
+          className="mb-10 p-2 rounded-xl dark:bg-gray-500 dark:text-white"
+       >
           <option value="LOW">LOW</option>
           <option value="MEDIUM">MEDIUM</option>
           <option value="HIGH">HIGH</option>
@@ -130,13 +128,15 @@ const Support = () => {
 
         <br />
 
-        <button onClick={raiseTicket} disabled={loading}>
+        <button 
+        className="bg-sky-500 hover:bg-sky-700 rounded-full hover:translate-1 w-32 h-10 hover:scale-105"
+        onClick={raiseTicket} disabled={loading}>
           {loading ? "Submitting..." : "Raise Ticket"}
         </button>
       </div>
 
       {/* ================= TICKET LIST ================= */}
-      <h3>Your Tickets</h3>
+      <h3 className="font-bold pb-4 dark:text-white">Your Tickets</h3>
 
       {loading && <p>Loading...</p>}
 
@@ -145,6 +145,7 @@ const Support = () => {
       {tickets.map((ticket) => (
         <div
           key={ticket.ticketId}
+          className="rounded-xl dark:bg-gray-500 dark:text-white"
           style={{
             border: "1px solid #ccc",
             padding: "12px",

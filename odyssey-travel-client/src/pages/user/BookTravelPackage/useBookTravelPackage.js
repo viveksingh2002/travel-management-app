@@ -17,7 +17,7 @@ export default function useBookTravelPackage() {
 
     //Dynamic Package Data from Backend
     const [packageData, setPackageData] = useState(initialPackageData);
-    const [loading, setLoading] = useState(!initialPackageData);
+    const [loading, setLoading] = useState();
 
     useEffect(() => {
         if (!id) {

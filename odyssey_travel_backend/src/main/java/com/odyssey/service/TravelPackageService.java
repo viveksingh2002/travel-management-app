@@ -13,9 +13,6 @@ public interface TravelPackageService {
 
     TravelPackage findPackageById(Long id);
 
-    // for admin
-    List<TravelPackage> getAllPackages();
-
     // admin will approve travel packages
     List<TravelPackage> getPackagesByStatus(Status status);
 
@@ -25,12 +22,10 @@ public interface TravelPackageService {
     // agent will be able to see only their travel packages
     List<TravelPackage> getPackagesByAgentId(Long agentId);
 
-    Optional<TravelPackage> getPackageById(Long id);
-
     // for updating approved status
     void updatePackageStatus(Long id, String status);
 
     // for saving travel package
-	void savePackage(TravelPackageDto travelpackage, String imageUrl);
+    void savePackage(TravelPackageDto travelpackage, String imageUrl);
 
 }

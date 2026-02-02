@@ -12,16 +12,4 @@ import com.odyssey.service.PaymentService;
 @Transactional
 public class PaymentServiceImpl implements PaymentService {
 
-	@Override
-	public Payment savePaymentDetails(PaymentRequestDTO payment) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public PaymentRequestDTO getPaymentDetails(Long PaymentID, Long UserID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
