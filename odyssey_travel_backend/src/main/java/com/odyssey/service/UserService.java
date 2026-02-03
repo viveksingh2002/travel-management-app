@@ -10,15 +10,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 
-public interface UserService {
-
     List<UserResponseDto> getAllUsers();
 
     UserResponseDto createUser(UserCreateRequestDto userCreateRequestDto);
 
     UserResponseDto getUserById(Long userId);
 
-	List<UserResponseDto> getUsersByRole(Role role);
+    List<UserResponseDto> getUsersByRole(Role role);
 
     UserResponseDto updateUserStatus(Long userId, boolean active);
 

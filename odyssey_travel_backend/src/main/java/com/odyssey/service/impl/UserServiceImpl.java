@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto createUser(UserCreateRequestDto userCreateRequestDto) {
 
-        if (userCreateRequestDto.getEmail() == null ) {
+        if (userCreateRequestDto.getEmail() == null) {
             throw new IllegalArgumentException("Email is required");
         }
 
@@ -44,14 +44,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDto> getUsersByRole(Role role) {
         return userRepository.findByRole(role).stream()
-                .map( user -> modelMapper.map(user, UserResponseDto.class))
+                .map(user -> modelMapper.map(user, UserResponseDto.class))
                 .toList();
     }
 
     @Override
     public UserResponseDto updateUserStatus(Long userId, boolean active) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new
-                ResourceNotFoundException("User not found "+userId));
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
         user.setActive(active);
         User savedUser = userRepository.save(user);
         return modelMapper.map(savedUser, UserResponseDto.class);
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found "+userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
 
         return modelMapper.map(user, UserResponseDto.class);
     }
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserResponseDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map( user -> modelMapper.map(user, UserResponseDto.class))
+                .map(user -> modelMapper.map(user, UserResponseDto.class))
                 .toList();
     }
 

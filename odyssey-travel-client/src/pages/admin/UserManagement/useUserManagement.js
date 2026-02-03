@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/users";
+const API_URL = "http://localhost:8080/api/v1/users";
 
 export default function useUserManagement() {
     const [users, setUsers] = useState([]);
@@ -16,12 +16,13 @@ export default function useUserManagement() {
             const response = await axios.get(`${API_URL}/role/CLIENT`);
             // Map backend data to frontend format
             const mappedUsers = response.data.map(user => ({
-                id: user.userId,
-                name: user.name,
+                id: user.id,
+                name: user.firstName,
                 email: user.email,
                 blocked: !user.active // if active is true, blocked is false
             }));
             setUsers(mappedUsers);
+            console.log(mappedUsers);
         } catch (error) {
             alert("Error: Could not get users.");
         }

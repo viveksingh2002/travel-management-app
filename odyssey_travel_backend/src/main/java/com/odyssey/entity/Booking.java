@@ -38,8 +38,8 @@ public class Booking {
     private String specialRequest;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
     private List<TravellersDetails> companionDetails = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
     private User user;
@@ -48,6 +48,6 @@ public class Booking {
     @JoinColumn(name = "package_id", nullable = false)
     private TravelPackage travelPackage;
 
-    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     private Payment payment;
 }

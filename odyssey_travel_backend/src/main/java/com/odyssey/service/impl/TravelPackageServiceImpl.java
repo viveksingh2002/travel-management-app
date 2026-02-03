@@ -35,40 +35,34 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 		// TODO Auto-generated method stub
 
 		User agent = userRepo.findById(dto.getAgentId())
-				.orElseGet(() -> userRepo.findAll().stream().findFirst()
-						.orElseThrow(() -> new RuntimeException("No users found in database. Please register a user/agent first.")));
-		 if (image == null || image.isEmpty()) {
-	            throw new RuntimeException("Image is required");
-	        }
+				.orElseThrow(() -> new RuntimeException(
+						"No users found in database. Please register a user/agent first."));
+		if (image == null || image.isEmpty()) {
+			throw new RuntimeException("Image is required");
+		}
 
-	        
-	            TravelPackage travelPackage = new TravelPackage();
-	            travelPackage.setTitle(dto.getTitle());
-	            travelPackage.setDescription(dto.getDescription());
-	            travelPackage.setPrice(dto.getPrice());
-            travelPackage.setDuration(dto.getDuration());
-                travelPackage.setTotalTravellers(dto.getTotalTravellers());
-	            travelPackage.setDestination(dto.getDestination());
-	            travelPackage.setAgent(agent);
-	            travelPackage.setImageUrl(image);
-	            travelPackage.setStatus(Status.PENDING); // admin approval later
+		TravelPackage travelPackage = new TravelPackage();
+		travelPackage.setTitle(dto.getTitle());
+		travelPackage.setDescription(dto.getDescription());
+		travelPackage.setPrice(dto.getPrice());
+		travelPackage.setDuration(dto.getDuration());
+		travelPackage.setTotalTravellers(dto.getTotalTravellers());
+		travelPackage.setDestination(dto.getDestination());
+		travelPackage.setAgent(agent);
+		travelPackage.setImageUrl(image);
+		travelPackage.setStatus(Status.PENDING); // admin approval later
 
-
-			travelRepo.save(travelPackage);
+		travelRepo.save(travelPackage);
 
 	}
 
-	@Override
-	public List<TravelPackage> getAllPackages() {
-		// TODO Auto-generated method stub
-		return travelRepo.findAll();
-	}
-
+	// to display packages to the user
 	@Override
 	public List<TravelPackage> getPackagesByStatusAndAgentActive(Status status) {
 		return travelRepo.findByStatusAndAgent_ActiveTrue(status);
 	}
 
+	// to display packages to the agent(only their packages)
 	@Override
 	public List<TravelPackage> getPackagesByAgentId(Long agentId) {
 		return travelRepo.findByAgentId(agentId);
@@ -79,6 +73,7 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 		return travelRepo.findById(id);
 	}
 
+	// when admin will approve the package
 	@Override
 	public void updatePackageStatus(Long id, String status) {
 		TravelPackage pkg = travelRepo.findById(id).orElseThrow(() -> new RuntimeException("Package not found"));
@@ -86,6 +81,7 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 		travelRepo.save(pkg);
 	}
 
+	// for admin to get pending packages
 	@Override
 	public List<TravelPackage> getPackagesByStatus(Status status) {
 

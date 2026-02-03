@@ -2,7 +2,6 @@ package com.odyssey.controller;
 
 import java.util.List;
 
-
 import com.odyssey.dto.UserCreateRequestDto;
 import com.odyssey.dto.UserResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-
 
 import com.odyssey.entity.Role;
 import com.odyssey.entity.User;
@@ -46,25 +44,21 @@ public class UserController {
 
     }
 
-    // get user by id api
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> getUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.getUserById(id));
-    }
 
-    // UPDATE USER STATUS (BLOCK/UNBLOCK)
+    // UPDATE USER STATUS (BLOCK/UNBLOCK),for user mngement
     @PutMapping("/{id}/block")
     public ResponseEntity<UserResponseDto> updateStatus(@PathVariable Long id, @RequestParam boolean blocked) {
         // blocked=true means active=false
         return ResponseEntity.ok(userService.updateUserStatus(id, !blocked));
     }
 
+    // get user whose role is agent, for agent mngment
     @GetMapping("/role/{role}")
     public ResponseEntity<List<UserResponseDto>> getUsersByRole(@PathVariable String role) {
         return ResponseEntity.ok(userService.getUsersByRole(Role.valueOf(role.toUpperCase())));
     }
 
-    //for agent
+    // for agent mngement
     @PostMapping("/{id}/status/{active}")
     public ResponseEntity<String> updateUserStatus(@PathVariable Long id, @PathVariable boolean active) {
         userService.updateUserStatus(id, active);
