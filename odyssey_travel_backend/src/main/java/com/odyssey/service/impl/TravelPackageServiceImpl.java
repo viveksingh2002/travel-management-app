@@ -68,6 +68,11 @@ public class TravelPackageServiceImpl implements TravelPackageService {
 		return travelRepo.findByAgentId(agentId);
 	}
 
+	@Override
+	public Optional<TravelPackage> getPackageById(Long id) {
+		return travelRepo.findById(id);
+	}
+
 	// when admin will approve the package
 	@Override
 	public void updatePackageStatus(Long id, String status) {

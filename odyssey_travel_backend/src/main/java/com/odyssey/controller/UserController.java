@@ -23,7 +23,7 @@ import com.odyssey.entity.User;
 import com.odyssey.service.UserService;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 public class UserController {
