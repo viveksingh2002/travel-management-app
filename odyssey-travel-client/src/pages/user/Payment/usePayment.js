@@ -32,7 +32,7 @@ export default function usePayment() {
 
     // Create the final booking payload
     const payload = {
-      userId: userId, // Use dynamic userId from session
+      id: userId, // Use dynamic userId from session
       packageId: packageId,
       travelDate: travelDate,
       travelers: travelers,

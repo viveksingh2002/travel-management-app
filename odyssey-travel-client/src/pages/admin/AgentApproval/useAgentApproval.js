@@ -11,7 +11,7 @@ const useAgentApproval = () => {
     const fetchAgents = async () => {
         setLoading(true);
         try {
-            const response = await axios.get("http://localhost:8080/api/users/role/agent");
+            const response = await axios.get("http://localhost:8080/api/v1/users/role/agent");
             setAgents(response.data);
             setError(null);
         } catch (error) {
@@ -29,7 +29,7 @@ const useAgentApproval = () => {
     // Activate an agent
     const handleApprove = async (id) => {
         try {
-            await axios.post(`http://localhost:8080/api/users/${id}/status/true`);
+            await axios.post(`http://localhost:8080/api/v1/users/${id}/status/true`);
             toast.success("Agent activated successfully");
             fetchAgents(); // Refresh the list to show updated status
         } catch (error) {
@@ -41,7 +41,7 @@ const useAgentApproval = () => {
     // Inactivate/Reject an agent
     const handleReject = async (id) => {
         try {
-            await axios.post(`http://localhost:8080/api/users/${id}/status/false`);
+            await axios.post(`http://localhost:8080/api/v1/users/${id}/status/false`);
             toast.success("Agent inactivated successfully");
             fetchAgents(); // Refresh the list
         } catch (error) {

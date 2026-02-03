@@ -48,8 +48,8 @@ public class BookingServiceImpl implements BookingService {
 				.orElseThrow(() -> new RuntimeException("User not found"));
 
 		// 2. Get Package
-		TravelPackage travelPackage = travelPackageRepository.findByIdForUpdate(bookingRequest.getPackageId())
-				.orElseThrow(() -> new RuntimeException("Package not found"));
+		TravelPackage travelPackage = travelPackageRepository.findByIdForUpdate(bookingRequest.getPackageId());
+				
 
 		int requestedSeats = bookingRequest.getTravelers();
 		int availableSeats = travelPackage.getTotalTravellers();
@@ -105,7 +105,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<BookingResponseDto> getAllBookings(Long userId) {
-		List<Booking> bookings = bookingRepository.findByUser_UserId(userId);
+		List<Booking> bookings = bookingRepository.findByUser_Id(userId);
 
 		return bookings.stream().map(booking -> {
 			BookingResponseDto dto = new BookingResponseDto();

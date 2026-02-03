@@ -9,5 +9,7 @@ import com.odyssey.entity.Booking;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Long> {
+    List<Booking> findByUser_Id(Long userId);
+
     List<Booking> findByUser_UserId(Long userId);
 }

@@ -24,6 +24,54 @@ export default function Signup() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSignup = async (e) => {
+    e.preventDefault();
+
+    const { firstName, lastName, email, password, confirmPassword } = formData;
+
+    if (!firstName) {
+      alert("please enter first name");
+      return;
+    }
+    if (!lastName) {
+      alert("please enter last name");
+      return;
+    }
+    if (!email) {
+      alert("please enter email");
+      return;
+    }
+    if (!password) {
+      alert("please enter password");
+      return;
+    }
+    if (!confirmPassword) {
+      alert("please confirm password");
+      return;
+    }
+    if (password !== confirmPassword) {
+      alert("password does not match");
+      return;
+    }
+
+    console.log(firstName + " " + lastName + " " + email + " " + password);
+    const response = await register({
+      firstName,
+      lastName,
+      email,
+      password,
+      role: 'AGENT'
+    })
+    console.log(response);
+
+    if (response && response.id) {
+      alert("Successfully registered user");
+      goToLogin();   // open login modal
+    } else {
+      alert("Signup failed");
+    }
+  }
+
   const goToLogin = () => {
     navigate("/");     // Move to landing
     setTimeout(() => {
@@ -53,7 +101,7 @@ export default function Signup() {
             Agent
           </p>
 
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSignup}>
 
             {/* First + Last Name */}
             <div className="flex gap-6">
@@ -129,7 +177,7 @@ export default function Signup() {
 
             {/* Signup Button – smaller width */}
             <div className="flex justify-center">
-              <button className="bg-red-600 text-white px-12 py-3 rounded-full text-xl font-semibold hover:bg-red-700 transition" onClick={goToLogin}>
+              <button type="submit" className="bg-red-600 text-white px-12 py-3 rounded-full text-xl font-semibold hover:bg-red-700 transition">
                 Sign Up
               </button>
             </div>

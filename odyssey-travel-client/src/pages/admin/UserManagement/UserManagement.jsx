@@ -54,7 +54,7 @@ export default function UserManagement() {
               filteredUsers.map((user) => (
                 <tr key={user.id} className="border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                   <td className="p-4 text-gray-600 dark:text-gray-400">{user.id}</td>
-                  <td className="p-4 font-semibold text-gray-800 dark:text-gray-200">{user.name}</td>
+                  <td className="p-4 font-semibold text-gray-800 dark:text-gray-200">{user.firstName}</td>
                   <td className="p-4 text-gray-600 dark:text-gray-400">{user.email}</td>
                   <td className="p-4">
                     {user.blocked ? (

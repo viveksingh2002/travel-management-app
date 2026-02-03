@@ -57,7 +57,7 @@ function AgentApproval() {
                 </thead>
                 <tbody className="divide-y divide-gray-50 dark:divide-gray-700">
                   {agents.map((agent) => (
-                    <tr key={agent.userId} className="hover:bg-gray-50/50 dark:hover:bg-gray-900/20 transition-colors">
+                    <tr key={agent.id} className="hover:bg-gray-50/50 dark:hover:bg-gray-900/20 transition-colors">
                       <td className="px-8 py-6 whitespace-nowrap">
                         <div className="flex flex-col">
                           <span className="text-sm font-bold text-gray-900 dark:text-white mb-0.5">{agent.name}</span>
@@ -81,14 +81,14 @@ function AgentApproval() {
                         <div className="flex justify-end gap-3">
                           {!agent.active ? (
                             <button
-                              onClick={() => handleApprove(agent.userId)}
+                              onClick={() => handleApprove(agent.id)}
                               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-bold rounded-xl transition-all shadow-md shadow-blue-100 dark:shadow-none"
                             >
                               Activate
                             </button>
                           ) : (
                             <button
-                              onClick={() => handleReject(agent.userId)}
+                              onClick={() => handleReject(agent.id)}
                               className="px-4 py-2 bg-gray-100 hover:bg-red-50 dark:bg-gray-700 dark:hover:bg-red-900/20 text-gray-600 hover:text-red-600 dark:text-gray-300 dark:hover:text-red-400 text-[11px] font-bold rounded-xl transition-all border border-gray-200 dark:border-gray-600"
                             >
                               Inactivate

@@ -63,7 +63,7 @@ public class SupportTicketServiceImpl implements SupportTicketService {
     // ===================== GET USER TICKETS =====================
     @Override
     public List<SupportTicketResponseDTO> getTicketsByUser(Long userId) {
-        return supportTicketRepository.findByUserUserId(userId)
+        return supportTicketRepository.findByUserId(userId)
                 .stream()
                 .map(this::mapToDTO)
                 .toList();

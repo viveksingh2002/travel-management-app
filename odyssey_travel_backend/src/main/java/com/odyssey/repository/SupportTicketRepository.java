@@ -8,5 +8,5 @@ import com.odyssey.entity.SupportTicket;
 
 public interface SupportTicketRepository extends JpaRepository<SupportTicket , Long> {
 
-	List<SupportTicket> findByUserUserId(Long userId);
+	List<SupportTicket> findByUserId(Long userId);
 }
